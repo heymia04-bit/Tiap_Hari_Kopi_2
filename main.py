@@ -248,6 +248,119 @@ div.stButton > button:hover {
     color: #8ab4f8;
     text-align: left;
 }
+
+/* MOBILE APP MOCKUP BRANDING CSS */
+.phone-mockup {
+    width: 100%;
+    max-width: 360px;
+    height: 640px;
+    background-color: #000000;
+    border: 8px solid #2a2a2a;
+    border-radius: 36px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.phone-link-wrapper {
+    text-decoration: none !important;
+    display: block;
+    cursor: pointer;
+}
+.phone-header {
+    padding: 15px 15px 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    border-bottom: 1px solid #121212;
+}
+.phone-profile-section {
+    padding: 15px;
+}
+.phone-stats-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.mock-avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #222;
+    padding: 2px;
+}
+.stat-box {
+    text-align: center;
+    flex: 1;
+}
+.stat-num {
+    font-weight: 700;
+    font-size: 16px;
+    display: block;
+    color: #ffffff;
+}
+.stat-label {
+    font-size: 11px;
+    color: #a8a8a8;
+}
+.bio-section {
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 0 15px 15px 15px;
+}
+.bio-name {
+    font-weight: 700;
+}
+.bio-text {
+    color: #f5f5f5;
+    white-space: pre-line;
+}
+.action-buttons {
+    display: flex;
+    gap: 6px;
+    padding: 0 15px 15px 15px;
+}
+.mock-btn {
+    flex: 1;
+    background-color: #1a1a1a;
+    color: white;
+    text-align: center;
+    padding: 6px 0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.mock-btn-blue {
+    background-color: #0095f6;
+}
+.scrollable-feed {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+}
+.scrollable-feed::-webkit-scrollbar {
+    width: 4px;
+}
+.scrollable-feed::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 2px;
+}
+.feed-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background-color: #152233;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -412,13 +525,143 @@ elif selected_route == "RESERVATIONS":
 elif selected_route == "FEEDBACK":
     st.markdown("<h2 style='color: white; margin-bottom: 20px; text-align:center;'>Customer Feedback Hub</h2>", unsafe_allow_html=True)
     
+    # Global component styles matching real Google Review cards (image_124948.jpg & image_123e02.png)
+    st.markdown("""
+    <style>
+        .reviews-scroll-container {
+            max-height: 680px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .reviews-scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .reviews-scroll-container::-webkit-scrollbar-track {
+            background: #0b131f;
+            border-radius: 4px;
+        }
+        .reviews-scroll-container::-webkit-scrollbar-thumb {
+            background: #2a3b50;
+            border-radius: 4px;
+        }
+        .google-review-card {
+            background-color: #101721;
+            border: 1px solid #1c2838;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            font-family: Roboto, Arial, sans-serif;
+        }
+        .gr-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .gr-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .gr-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .gr-user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .gr-name {
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .gr-meta {
+            color: #9aa0a6;
+            font-size: 12px;
+        }
+        .gr-more-btn {
+            color: #9aa0a6;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .gr-stars-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .gr-stars {
+            color: #fbbc05;
+            letter-spacing: 1px;
+        }
+        .gr-time {
+            color: #9aa0a6;
+        }
+        .gr-text {
+            color: #e8eaed;
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        /* Exact Google Review Image Grid Layout Formulation */
+        .gr-images-grid {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+        }
+        .gr-img {
+            width: 105px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #202b3c;
+        }
+        .gr-footer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #9aa0a6;
+            font-size: 13px;
+            margin-top: 8px;
+            border-top: 1px solid #1c2838;
+            padding-top: 10px;
+        }
+        .local-review-card {
+            background-color: #0b1119;
+            border-left: 4px solid #1877f2;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
     col_left, col_right = st.columns([1.1, 0.9], gap="large")
 
     with col_left:
         st.markdown('<h3 style="color: white; margin-bottom: 20px;">What they say about us (Google Reviews)</h3>', unsafe_allow_html=True)
         
+        # Base64 Conversions for the primary review images
+        gr_b64_1 = get_b64_image("images/gr1.jpg")
+        gr_b64_2 = get_b64_image("images/gr2.jpg")
+        gr_b64_3 = get_b64_image("images/gr3.jpg")
+        gr_b64_4 = get_b64_image("images/gr4.jpg")
+        
+        # Base64 placeholders for the newly added review images to prevent rendering crashes
+        thumb_a = get_b64_image("images/tiapharifront.jpg")
+        thumb_b = get_b64_image("images/tiapharibestdrinks.jpg")
+        thumb_c = get_b64_image("images/tiapharipasta.jpg")
+
+        # Open the scrolling viewport container wrapper
+        st.markdown('<div class="reviews-scroll-container">', unsafe_allow_html=True)
+        
         # --- REVIEW 1: NurZetty Sofia ---
-        st.markdown("""
+        st.markdown(f"""
         <div class="google-review-card">
             <div class="gr-header">
                 <div class="gr-profile">
@@ -439,24 +682,27 @@ elif selected_route == "FEEDBACK":
                 Saya kenal TiapHari ni semenjak 2022. Speciality mmg Nisse Latte dan Kacang Phool. Walaupun KB ni byk kedai kopi, tp tak boleh lagi lawan Nisse latte TiapHari (ice/hot dua2 sedap) dan takde tempat lain nak cari kacang phool. Bukan tak ... <span style="color:#8ab4f8; cursor:pointer;">Lagi</span>
             </div>
             <div class="gr-images-grid">
-                <img class="gr-img" src="images/tiapharibestdrinks.jpg" onerror="this.src='https://images.unsplash.com/photo-1541167760496-1628856ab772?w=150'">
-                <img class="gr-img" src="images/tiaparipasta.jpg" onerror="this.src='https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=150'">
-                <img class="gr-img" src="images/tiapharisnack.jpg" onerror="this.src='https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=150'">
-                <img class="gr-img" src="images/tiapharikacangphool.jpg" onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=150'">
+                <img class="gr-img" src="{gr_b64_1}">
+                <img class="gr-img" src="{gr_b64_2}">
+                <img class="gr-img" src="{gr_b64_3}">
+                <img class="gr-img" src="{gr_b64_4}">
             </div>
             <div class="gr-footer">
                 <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
+                <div style="display:flex; align-items:center; gap:4px;">🙏 <span>2</span></div>
                 <div>🔗</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-        # --- REVIEW 2 ---
+        # --- REVIEW 2: Farhana (Website Feedback) ---
         st.markdown("""
         <div class="local-review-card">
-            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05;">★★★★★</div>
-            <span style="font-weight: bold; color: #8ab4f8;">Farhana</span> 
-            <span style="color: #bdc1c6;">— Super friendly service. Perfect environment to chill out or focus on remote work. (Verified Website Feedback)</span>
+            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★★</div>
+            <span style="font-weight: bold; color: #8ab4f8; font-size:14px;">Farhana</span> 
+            <div style="color: #bdc1c6; font-size:13px; margin-top:4px; line-height:1.4;">
+                — Super friendly service. Perfect environment to chill out or focus on remote work. (Verified Website Feedback)
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -479,10 +725,10 @@ elif selected_route == "FEEDBACK":
             </div>
             <div class="gr-text">
                 Good food , just parking abit hard
-                <div class="gr-aspects">
+                <div style="background-color: #17202a; padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-size: 12px; color: #bdc1c6;">
                     <b>Makanan:</b> 5/5  |  <b>Perkhidmatan:</b> 5/5  |  <b>Suasana:</b> 5/5
                 </div>
-                <span style="font-size:12px; color:#8ab4f8; cursor:pointer; margin-top:5px; display:inline-block;">Lihat terjemahan (Melayu)</span>
+                <span style="font-size:12px; color:#8ab4f8; cursor:pointer; margin-top:8px; display:inline-block;">Lihat terjemahan (Melayu)</span>
             </div>
             <div class="gr-footer">
                 <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
@@ -490,6 +736,95 @@ elif selected_route == "FEEDBACK":
             </div>
         </div>
         """, unsafe_allow_html=True)
+
+        # --- NEW REVIEW 4: Era Ab Rahim (Google Review matching image_124948.jpg layout) ---
+        st.markdown(f"""
+        <div class="google-review-card">
+            <div class="gr-header">
+                <div class="gr-profile">
+                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" alt="Avatar">
+                    <div class="gr-user-info">
+                        <span class="gr-name">Era Ab Rahim</span>
+                        <span class="gr-meta">Jurupandu Tempatan • 794 ulasan • 4241 foto</span>
+                    </div>
+                </div>
+                <div class="gr-more-btn">⋮</div>
+            </div>
+            <div class="gr-stars-row">
+                <span class="gr-stars">★★★★★</span>
+                <span class="gr-time">Diedit setahun yang lalu</span>
+            </div>
+            <div class="gr-text" style="color: #9aa0a6; font-size: 12.5px; margin-bottom: 6px;">
+                Makan di kedai | Lain-lain
+            </div>
+            <div class="gr-text">
+                My first visit here. Staff sgt baik, friendly and polite. Dorg kata bestseller kat sini Nisse Latte (gula melaka), but i chose Caramel Macchiato instead. & Pomegranate Soda for my friend there 🤭 Also served mini cheese tarts & pavlova. Kat ... <span style="color:#8ab4f8; cursor:pointer;">Lagi</span>
+                <br><span style="font-size:12px; color:#8ab4f8; cursor:pointer; margin-top:6px; display:inline-block;">Lihat terjemahan (Melayu)</span>
+            </div>
+            <div class="gr-images-grid">
+                <img class="gr-img" src="{thumb_a}">
+                <img class="gr-img" src="{thumb_b}">
+                <img class="gr-img" src="{thumb_c}">
+            </div>
+            <div class="gr-footer">
+                <div style="display:flex; align-items:center; gap:4px;">❤️</div>
+                <div style="display:flex; align-items:center; gap:4px;">🙏 <span>3</span></div>
+                <div>🔗</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # --- NEW REVIEW 5: Khairul Amrin (Google Review) ---
+        st.markdown("""
+        <div class="google-review-card">
+            <div class="gr-header">
+                <div class="gr-profile">
+                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" alt="Avatar">
+                    <div class="gr-user-info">
+                        <span class="gr-name">Khairul Amrin</span>
+                        <span class="gr-meta">12 ulasan</span>
+                    </div>
+                </div>
+                <div class="gr-more-btn">⋮</div>
+            </div>
+            <div class="gr-stars-row">
+                <span class="gr-stars">★★★★★</span>
+                <span class="gr-time">2 bulan yang lalu</span>
+            </div>
+            <div class="gr-text">
+                Pasta dia portion padu & harga berbaloi sangat area Kubang Kerian ni. Nisse Latte icing tak manis potong kaki, just nice berkrim. Memang port lepak tetap lepas balik kerja.
+            </div>
+            <div class="gr-footer">
+                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>2</span></div>
+                <div>🔗</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # --- NEW REVIEW 6: Sarah M. (Verified Website Feedback) ---
+        st.markdown("""
+        <div class="local-review-card" style="border-left-color: #00g5f6;">
+            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★★</div>
+            <span style="font-weight: bold; color: #8ab4f8; font-size:14px;">Sarah M.</span> 
+            <div style="color: #bdc1c6; font-size:13px; margin-top:4px; line-height:1.4;">
+                — Ordered via the web interface for pickup. The food was hot, packed clean, and the staff even walked it out to my car because parking was full. Outstanding hospitality! (Verified Website Feedback)
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # --- NEW REVIEW 7: Bryan T. (Verified Website Feedback) ---
+        st.markdown("""
+        <div class="local-review-card" style="border-left-color: #00g5f6;">
+            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★☆</div>
+            <span style="font-weight: bold; color: #8ab4f8; font-size:14px;">Bryan T.</span> 
+            <div style="color: #bdc1c6; font-size:13px; margin-top:4px; line-height:1.4;">
+                — The Kacang Phool is authentic and complex. A rare find in Kota Bharu cafés. Docked one star just because seating fills up so quickly on weekends! (Verified Website Feedback)
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Close the scrolling viewport container wrapper safely
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col_right:
         st.markdown('<h3 style="color: white; margin-bottom: 20px;">Share your feedback</h3>', unsafe_allow_html=True)
@@ -586,11 +921,435 @@ elif selected_route == "ABOUT US":
         Every cup of coffee we serve carries passion, comfort, and a little bit of happiness ☕💛
     </div>
     """, unsafe_allow_html=True)
-    
+
+    # ------------------------------------------------------------------
+    # CENTRALIZED DIGITAL BRANDING SECTION (NOW INSIDE THE ABOUT US ROUTE)
+    # ------------------------------------------------------------------
+    st.markdown("<hr style='border-color: #1a2636; margin: 50px 0;'>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center; margin-bottom:10px;'>📲Social Media Hub</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center; color:#92a4b8; margin-bottom:40px;'>Experience our daily live updates on phone views. Click to redirect to our official profiles.</p>", unsafe_allow_html=True)
+
+    placeholder_img = b64_srcs[1] # Base image asset reference is safe here now!
+
+    social_col1, social_col2 = st.columns(2)
+
+    with social_col1:
+        st.markdown("<h4 style='text-align:center; color:#ffffff; font-weight:700; margin-bottom:15px;'>Our Instagram</h4>", unsafe_allow_html=True)
+        instagram_mock_html = f"""
+        <style>
+            .phone-link-wrapper {{
+                text-decoration: none !important;
+                color: inherit !important;
+                display: block;
+                cursor: pointer;
+            }}
+            .phone-link-wrapper * {{
+                text-decoration: none !important;
+            }}
+            .phone-mockup {{
+                width: 100%;
+                max-width: 350px;
+                height: 600px;
+                background-color: #000000;
+                border: 8px solid #2a2a2a;
+                border-radius: 36px;
+                margin: 0 auto;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+                color: #ffffff;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            }}
+            .phone-header {{
+                padding: 12px 15px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background-color: #000000;
+                z-index: 10;
+            }}
+            .phone-header-left {{
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-size: 16px;
+                font-weight: 700;
+            }}
+            .phone-content-scroll {{
+                flex: 1;
+                overflow-y: auto;
+                padding-right: 2px;
+            }}
+            .phone-content-scroll::-webkit-scrollbar {{
+                width: 5px;
+            }}
+            .phone-content-scroll::-webkit-scrollbar-track {{
+                background: #000000;
+            }}
+            .phone-content-scroll::-webkit-scrollbar-thumb {{
+                background: #333333;
+                border-radius: 10px;
+            }}
+            .phone-profile-section {{
+                padding: 5px 15px 10px 15px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 15px;
+            }}
+            .mock-avatar-container {{
+                flex-shrink: 0;
+            }}
+            .mock-avatar {{
+                width: 76px;
+                height: 76px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid #000000;
+                box-shadow: 0 0 0 2px #262626;
+            }}
+            .phone-stats-container {{
+                display: flex;
+                flex: 1;
+                justify-content: space-around;
+                text-align: center;
+            }}
+            .stat-box {{
+                display: flex;
+                flex-direction: column;
+            }}
+            .stat-num {{
+                font-weight: 700;
+                font-size: 15px;
+                color: #ffffff;
+            }}
+            .stat-label {{
+                font-size: 12px;
+                color: #f5f5f5;
+            }}
+            .bio-section {{
+                font-size: 13px;
+                line-height: 1.4;
+                padding: 0 15px 10px 15px;
+            }}
+            .bio-name {{
+                font-weight: 700;
+                color: #ffffff;
+                font-size: 14px;
+                margin-bottom: 2px;
+            }}
+            .bio-category {{
+                color: #a8a8a8;
+                font-size: 13px;
+                margin-bottom: 2px;
+            }}
+            .bio-text {{
+                color: #ffffff;
+            }}
+            .bio-link {{
+                color: #c1d1f0;
+                font-weight: 500;
+                margin-top: 2px;
+            }}
+            .bio-badges {{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-top: 8px;
+            }}
+            .bio-badge {{
+                background-color: #121212;
+                border: 1px solid #262626;
+                padding: 4px 10px;
+                border-radius: 15px;
+                font-size: 11px;
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }}
+            .action-buttons {{
+                display: flex;
+                gap: 6px;
+                padding: 5px 15px 15px 15px;
+            }}
+            .mock-btn {{
+                flex: 1;
+                background-color: #262626;
+                color: white !important;
+                text-align: center;
+                padding: 7px 0;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 600;
+            }}
+            .mock-btn-blue {{
+                background-color: #0095f6;
+            }}
+            .mock-btn-arrow {{
+                flex: 0 0 35px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }}
+            .grid-feed {{
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2px;
+                background: #000;
+                padding: 2px 0 20px 0;
+            }}
+            .feed-img {{
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                object-fit: cover;
+            }}
+        </style>
+        <a class="phone-link-wrapper" href="https://www.instagram.com/tiapharikopi/?hl=ms" target="_blank">
+            <div class="phone-mockup">
+                <div class="phone-header">
+                    <div class="phone-header-left">
+                        <span>⟨</span>
+                        <span>tiapharikopi</span>
+                    </div>
+                    <span style="font-size:16px; color:#fff; display: flex; gap: 15px;"><span>🔔</span><span>⋮</span></span>
+                </div>
+                <div class="phone-content-scroll">
+                    <div class="phone-profile-section">
+                        <div class="mock-avatar-container">
+                            <img class="mock-avatar" src="{placeholder_img}">
+                        </div>
+                        <div class="phone-stats-container">
+                            <div class="stat-box"><span class="stat-num">112</span><span class="stat-label">posts</span></div>
+                            <div class="stat-box"><span class="stat-num">3,331</span><span class="stat-label">followers</span></div>
+                            <div class="stat-box"><span class="stat-num">84</span><span class="stat-label">following</span></div>
+                        </div>
+                    </div>
+                    <div class="bio-section">
+                        <div class="bio-name">TiapHari Kopi</div>
+                        <div class="bio-category">Coffee shop</div>
+                        <div class="bio-text">
+                            📍 Kubang Kerian, Kelantan<br>
+                            Open Daily 3PM – 11PM<br>
+                            Kitchen last order @ 10PM<br>
+                            ❌ Closed on W... <span style="color:#a8a8a8;">more</span>
+                        </div>
+                        <div class="bio-link">🔗 linktr.ee/tiapharikopi</div>
+                        <div class="bio-badges">
+                            <div class="bio-badge">🌀 tiapharikopi</div>
+                            <div class="bio-badge">👤 Facebook profile</div>
+                            <div class="bio-badge">👤 TiapHari Kopi</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="mock-btn mock-btn-blue">Follow</div>
+                        <div class="mock-btn">Message</div>
+                        <div class="mock-btn">Contact</div>
+                        <div class="mock-btn mock-btn-arrow">∨</div>
+                    </div>
+                    <div class="grid-feed">
+                        <img class="feed-img" src="{placeholder_img}">
+                        <img class="feed-img" src="{b64_srcs[3]}">
+                        <img class="feed-img" src="{b64_srcs[4]}">
+                        <img class="feed-img" src="{b64_srcs[5]}">
+                        <img class="feed-img" src="{b64_srcs[6]}">
+                        <img class="feed-img" src="{b64_srcs[0]}">
+                        <img class="feed-img" src="{b64_srcs[7]}">
+                        <img class="feed-img" src="{b64_srcs[8]}">
+                        <img class="feed-img" src="{b64_srcs[2]}">
+                        <img class="feed-img" src="{placeholder_img}">
+                        <img class="feed-img" src="{b64_srcs[3]}">
+                        <img class="feed-img" src="{b64_srcs[5]}">
+                        <img class="feed-img" src="{b64_srcs[6]}">
+                        <img class="feed-img" src="{b64_srcs[7]}">
+                        <img class="feed-img" src="{b64_srcs[4]}">
+                    </div>
+                </div>
+            </div>
+        </a>
+        """
+        st.components.v1.html(instagram_mock_html, height=660)
+
+    with social_col2:
+        st.markdown("<h4 style='text-align:center; color:#ffffff; font-weight:700; margin-bottom:15px;'>Our Facebook</h4>", unsafe_allow_html=True)
+        facebook_mock_html = f"""
+        <style>
+            .phone-link-wrapper {{
+                text-decoration: none !important;
+                color: inherit !important;
+                display: block;
+                cursor: pointer;
+            }}
+            .phone-link-wrapper * {{
+                text-decoration: none !important;
+            }}
+            .phone-mockup {{
+                width: 100%;
+                max-width: 350px;
+                height: 600px;
+                background-color: #18191a;
+                border: 8px solid #2a2a2a;
+                border-radius: 36px;
+                margin: 0 auto;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+                color: #ffffff;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            }}
+            .phone-header {{
+                padding: 15px 15px 10px 15px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-weight: bold;
+                background-color: #242526;
+                border-bottom: 1px solid #3a3b3c;
+                z-index: 10;
+            }}
+            .phone-content-scroll {{
+                flex: 1;
+                overflow-y: auto;
+                padding-right: 2px;
+            }}
+            .phone-content-scroll::-webkit-scrollbar {{
+                width: 5px;
+            }}
+            .phone-content-scroll::-webkit-scrollbar-track {{
+                background: #18191a;
+            }}
+            .phone-content-scroll::-webkit-scrollbar-thumb {{
+                background: #444444;
+                border-radius: 10px;
+            }}
+            .fb-cover-banner {{
+                width: 100%;
+                height: 120px;
+                background-color: #242526;
+                position: relative;
+            }}
+            .fb-cover-banner img {{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }}
+            .fb-avatar {{
+                position: absolute;
+                bottom: -25px;
+                left: 15px;
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                border: 4px solid #18191a;
+                object-fit: cover;
+            }}
+            .fb-meta-info {{
+                padding: 35px 15px 10px 15px;
+            }}
+            .fb-title {{
+                font-size: 18px;
+                font-weight: 800;
+                color: #ffffff;
+            }}
+            .fb-handle {{
+                font-size: 12px;
+                color: #b0b3b8;
+                margin-top: 2px;
+            }}
+            .fb-followers {{
+                font-size: 12px;
+                color: #e4e6eb;
+                margin-top: 6px;
+                margin-bottom: 12px;
+            }}
+            .fb-detailed-bio {{
+                font-size: 13px;
+                color: #e4e6eb;
+                line-height: 1.5;
+                padding: 0 15px 15px 15px;
+                border-bottom: 1px solid #3a3b3c;
+            }}
+            .action-buttons {{
+                display: flex;
+                gap: 6px;
+                padding: 15px;
+            }}
+            .mock-btn {{
+                flex: 1;
+                background-color: #3a3b3c;
+                color: white !important;
+                text-align: center;
+                padding: 7px 0;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: 600;
+            }}
+            .mock-btn-blue {{
+                background-color: #1877f2;
+            }}
+            .grid-feed {{
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2px;
+                background: #18191a;
+                padding: 2px 0 20px 0;
+            }}
+            .feed-img {{
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                object-fit: cover;
+            }}
+        </style>
+        <a class="phone-link-wrapper" href="https://www.facebook.com/tiapharikopimy/?locale=ms_MY" target="_blank">
+            <div class="phone-mockup">
+                <div class="phone-header">
+                    <span style="color:#fff;">🔍 Tiap Hari Kopi</span>
+                    <span style="color:#fff;">💬</span>
+                </div>
+                <div class="phone-content-scroll">
+                    <div class="fb-cover-banner">
+                        <img src="{b64_srcs[3]}">
+                        <img class="fb-avatar" src="{placeholder_img}">
+                    </div>
+                    <div class="fb-meta-info">
+                        <div class="fb-title">Tiap Hari Kopi</div>
+                        <div class="fb-handle">@tiapharikopimy • Coffee Shop</div>
+                        <div class="fb-followers">👥 <b>3.3K</b> followers • <b>295</b> following</div>
+                    </div>
+                    <div class="fb-detailed-bio">
+                        📍 Kubang Kerian, Kelantan<br>
+                        Open Daily 3PM – 11PM<br>
+                        Kitchen last order @ 10PM<br>
+                        ❌ Closed on Wednesday<br>
+                        <span style="color: #b0b3b8; font-size: 11px;">EDANAZ ENTERPRISE (KT0487519-X)</span>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="mock-btn mock-btn-blue">✓ Liked</div>
+                        <div class="mock-btn">Message</div>
+                    </div>
+                    <div class="grid-feed">
+                        <img class="feed-img" src="{b64_srcs[5]}">
+                        <img class="feed-img" src="{b64_srcs[6]}">
+                        <img class="feed-img" src="{placeholder_img}">
+                        <img class="feed-img" src="{b64_srcs[7]}">
+                        <img class="feed-img" src="{b64_srcs[8]}">
+                        <img class="feed-img" src="{b64_srcs[2]}">
+                        <img class="feed-img" src="{placeholder_img}">
+                        <img class="feed-img" src="{b64_srcs[3]}">
+                        <img class="feed-img" src="{b64_srcs[4]}">
+                    </div>
+                </div>
+            </div>
+        </a>
+        """
+        st.components.v1.html(facebook_mock_html, height=660)
+
 elif selected_route == "LOG IN":
     st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center;'>🔒 Internal Portal & Analytics</h2>", unsafe_allow_html=True)
     
-    tab_metrics, tab_login = st.tabs(["📊 Business Metrics & Sentiment", "🔑 Staff Login Portal"])
+    tab_metrics, tab_login = st.tabs(["📊 Business Analytics Dashboard", "🔑 Staff Login Portal"])
     
     with tab_metrics:
         d_col1, d_col2 = st.columns([1, 1.2], gap="large")
