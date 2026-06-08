@@ -1376,23 +1376,130 @@ elif selected_route == "LOG IN":
         st.button("Authenticate & Log In")
 
 # ==================================================
-# FOOTER SECTION
+# FOOTER SECTION (Tiap Hari Kopi Style)
 # ==================================================
+
+# Jarak atas dan garisan pemisah
 st.markdown("<br><br>", unsafe_allow_html=True)
-st.markdown("---") 
+st.markdown("---")
 
-f_col1, f_col2, f_col3 = st.columns(3)
-with f_col1:
-    st.markdown("### TIAP HARI KOPI")
-    st.caption("Every single cup carries raw passion, home comfort, and a little bit of daily happiness. ☕💛")
+# Menggunakan 2 kolum utama untuk susun atur kiri & kanan
+col1, col2 = st.columns([1.1, 0.9], gap="large")
 
-with f_col2:
-    st.markdown("📍 **Visit Our Hub**")
-    st.caption("Lot 2046, Kampung Gok Bata,\nJalan Raja Perempuan Zainab II,\n16150 Kota Bharu, Kelantan.")
+# =====================================
+# SEKSYEN KIRI (Header, About Us, Visit Hub, Call)
+# =====================================
+with col1:
+    # Nama Kedai & Ikon Kopi
+    st.markdown("""
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: -10px;">
+            <h1 style="color: #E0F7FA; font-family: 'Arial Black', sans-serif; font-size: 42px; font-weight: 900; letter-spacing: 1px; margin: 0;">TIAP HARI KOPI</h1>
+            <span style="font-size: 38px;">☕</span>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # About Us
+    st.markdown("""
+        <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 25px; margin-bottom: 10px;">About Us</h2>
+        <p style="color: #E0E0E0; font-size: 15px; margin-bottom: 5px;">Every single cup carries raw passion, home comfort, and a little bit of daily happiness.</p>
+        <p style="font-size: 16px; margin-top: 0;">🤎</p>
+    """, unsafe_allow_html=True)
+    
+    # Visit Our Hub
+    st.markdown("""
+        <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 25px; margin-bottom: 10px;">📍 Visit Our Hub</h2>
+        <p style="color: #E0E0E0; font-size: 15px; line-height: 1.6;">
+        Lot 2046, Kampung Gok Bata, Jalan Raja Perempuan Zainab II, <br>16150 Kota Bharu, Kelantan.
+        </p>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Call Us
+    st.markdown("""
+        <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 10px; margin-bottom: 15px;">📞 Call Us</h2>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <a href="tel:+60134944337" style="text-decoration: none;">
+                <img src="https://cdn-icons-png.flaticon.com/512/3616/3616215.png" width="48" style="border-radius: 50%;">
+            </a>
+            <a href="tel:+60134944337" style="font-size: 28px; text-decoration: none; color: #E5A967; font-weight: bold; font-family: sans-serif;">
+                013-4944337
+            </a>
+            <a href="https://wa.me/60134944337" target="_blank" style="text-decoration: none;">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="48">
+            </a>
+        </div>
+    """, unsafe_allow_html=True)
 
-with f_col3:
-    st.markdown("🔗 **Connect With Us**")
-    st.markdown("[🌐 Facebook](https://facebook.com)")
-    st.markdown("[📸 Instagram](https://instagram.com)")
+# =====================================
+# SEKSYEN KANAN (Connect With Us & Followers)
+# =====================================
+with col2:
+    # Connect With Us Title
+    st.markdown("""
+        <h2 style="color: #F3E5D8; font-size: 26px; margin-bottom: 15px;">🔗 Connect With Us</h2>
+    """, unsafe_allow_html=True)
+    
+    # Grid Ikon Media Sosial Atas
+    st.markdown("""
+        <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+            <a href="https://www.facebook.com/TiapHariKopi" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="45">
+            </a>
+            <a href="https://www.instagram.com/TiapHariKopi" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="45">
+            </a>
+            <a href="https://www.tiktok.com/@TiapHariKopi" target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="45">
+            </a>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Statistik Followers
+    st.markdown("""
+        <div style="font-size: 16px; font-family: sans-serif; color: #E0E0E0; display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="24">
+                <span><b>Facebook : 3.3K Followers</b></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="24">
+                <span><b>Instagram : 3,331 Followers</b></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="24">
+                <span><b>TikTok : 766 Followers</b></span>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
-st.markdown("<p style='text-align: center; color: rgba(255,255,255,0.3); font-size: 0.8rem; margin-top: 40px;'>© 2026 Tiap Hari Kopi Enterprise. All Rights Reserved. | Inspired by Nasken Modern Template</p>", unsafe_allow_html=True)
+# =====================================
+# BAHAGIAN BAWAH (Opening Hours & Copyright)
+# =====================================
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+# Opening Hours (Sama tulisan sebiji seperti dalam gambar)
+st.markdown("""
+    <div style="margin-top: 10px; margin-bottom: 20px;">
+        <h2 style="color: #F3E5D8; font-size: 28px; display: flex; align-items: center; gap: 10px;">
+            🕒 Opening Hours
+        </h2>
+        <ul style="color: #E0E0E0; font-size: 16px; list-style-type: disc; padding-left: 20px; line-height: 1.8;">
+            <li>Open Daily : 3PM - 11PM</li>
+            <li>Kitchen Last Order : 10PM</li>
+            <li>Closed on Wednesday</li>
+        </ul>
+    </div>
+""", unsafe_allow_html=True)
+
+# Garisan pemisah halus sebelum hak cipta
+st.markdown("<br><hr style='border-top: 1px solid rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
+
+# Hak Cipta & Inspirasi Template
+st.markdown("""
+    <div style="text-align: center; font-size: 14px; padding-top: 15px; padding-bottom: 20px; color: rgba(255,255,255,0.5); line-height: 1.6; font-family: sans-serif;">
+        © 2026 Tiap Hari Kopi Enterprise.<br>
+        All Rights Reserved.<br><br>
+        Inspired by Nasken Modern Template ☕
+    </div>
+""", unsafe_allow_html=True)
