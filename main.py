@@ -12,7 +12,7 @@ st.set_page_config(page_title="Tiap Hari Kopi", layout="wide")
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght=300;400;600;700;800&display=swap');
 
 html, body, [data-testid="stAppViewContainer"] {
     font-family: 'Montserrat', sans-serif;
@@ -48,6 +48,22 @@ html, body, [data-testid="stAppViewContainer"] {
     font-weight: 600;
     letter-spacing: 1.5px;
     color: #92a4b8;
+}
+
+/* CLEAN MODERN NAV LINK LINKS */
+.nk-nav-link {
+    color: #92a4b8 !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    padding-bottom: 6px;
+    border-bottom: 2px solid transparent;
+}
+.nk-nav-link:hover {
+    color: #ffffff !important;
+}
+.nk-nav-link.active {
+    color: #ffffff !important;
+    border-bottom: 2px solid #004481 !important; /* Elegant bottom accent line like Starbucks */
 }
 
 /* HERO BANNER TEXT */
@@ -361,6 +377,91 @@ div.stButton > button:hover {
     object-fit: cover;
     background-color: #152233;
 }
+
+/* STARBUCKS PROMOTIONS INTERFACE STYLE */
+.sb-promo-container {
+    display: flex;
+    background-color: #0e382c;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    min-height: 380px;
+}
+.sb-promo-img-side {
+    flex: 1;
+    min-width: 50%;
+    background-size: cover;
+    background-position: center;
+}
+.sb-promo-text-side {
+    flex: 1;
+    padding: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #1e3932;
+}
+.sb-promo-title {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+.sb-promo-desc {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+.sb-promo-btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border: 1px solid;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: background-color 0.2s;
+}
+
+/* STARBUCKS ASYMMETRIC IMAGE GRID STYLE */
+.sb-grid-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 16px;
+    width: 100%;
+    margin-top: 20px;
+}
+.sb-grid-left-featured {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.sb-grid-left-featured img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.sb-grid-right-stack {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.sb-grid-item {
+    border-radius: 6px;
+    overflow: hidden;
+    width: 100%;
+}
+.sb-grid-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -383,29 +484,34 @@ if "customer_metrics" not in st.session_state:
         "Repeat Customer": 604
     }
 
+# --- TRACK ACTIVE NAVIGATION ROUTE ---
+current_params = st.query_params
+selected_route = current_params.get("page", "HOME")
+
+# Helper to easily inject the active line style class directly onto the active link element
+def get_active_class(route_name):
+    return "nk-nav-link active" if selected_route == route_name else "nk-nav-link"
+
 # --- BRAND NAVIGATION HEADER ---
-st.markdown("""
+st.markdown(f"""
 <div class="nk-header">
     <div class="nk-logo">TIAP HARI <span>KOPI</span></div>
     <div class="nk-nav">
-        HOME &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
-        MENU &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
-        RESERVATIONS &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
-        FEEDBACK &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
-        ABOUT US &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
-        LOG IN
+        <a class="{get_active_class('HOME')}" href="?page=HOME" target="_self">HOME</a> &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+        <a class="{get_active_class('MENU')}" href="?page=MENU" target="_self">MENU</a> &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+        <a class="{get_active_class('RESERVATIONS')}" href="?page=RESERVATIONS" target="_self">RESERVATIONS</a> &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+        <a class="{get_active_class('FEEDBACK')}" href="?page=FEEDBACK" target="_self">FEEDBACK</a> &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+        <a class="{get_active_class('ABOUT US')}" href="?page=ABOUT US" target="_self">ABOUT US</a> &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+        <a class="{get_active_class('LOG IN')}" href="?page=LOG IN" target="_self">LOG IN</a>
     </div>
 </div>
 """, unsafe_allow_html=True)
-
-page_options = ["HOME + MENU", "RESERVATIONS", "FEEDBACK", "ABOUT US", "LOG IN"]
-selected_route = st.radio(label="Active View", options=page_options, horizontal=True, label_visibility="collapsed")
 
 # ==================================================
 # CONDITIONAL RENDERING FRAMEWORK
 # ==================================================
 
-if selected_route == "HOME + MENU":
+if selected_route == "HOME":
     st.markdown('<div class="nk-hero-title">Local Coffee, Premium Vibes.</div>', unsafe_allow_html=True)
     st.markdown('<div class="nk-hero-subtitle">Every Single Day Perfection</div>', unsafe_allow_html=True)
 
@@ -418,7 +524,7 @@ if selected_route == "HOME + MENU":
     ]
     h_b64 = [get_b64_image(p) for p in home_images]
 
-    # 2. Infinite Loop pure CSS Slider (Transitions every 1.5s, total timeline 6s)
+    # 2. Infinite Loop pure CSS Slider
     home_slider_html = f"""
     <style>
         .home-slider-wrapper {{
@@ -459,7 +565,67 @@ if selected_route == "HOME + MENU":
     """
     st.components.v1.html(home_slider_html, height=500)
 
-    st.markdown("<hr style='border-color: #1a2636; margin: 60px 0;'>", unsafe_allow_html=True)
+    st.markdown("<hr style='border-color: #1a2636; margin: 50px 0;'>", unsafe_allow_html=True)
+    
+    # --------------------------------------------------
+    # NEW PROMOTIONS AND ANNOUNCEMENT SECTION (STARBUCKS DESIGN)
+    # --------------------------------------------------
+    st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center; margin-bottom: 35px;'>Promotions & Announcement</h2>", unsafe_allow_html=True)
+    
+    promo_b64_left = get_b64_image("images/waktuoperasi.jpg")
+    promo_b64_right = get_b64_image("images/feedbackpic.jpg")
+    
+    promo_col1, promo_col2 = st.columns(2, gap="large")
+    
+    with promo_col1:
+        st.markdown(f"""
+        <div class="sb-promo-container" style="background-color: #d4e9e2;">
+            <div class="sb-promo-img-side" style="background-image: url('{promo_b64_left}');"></div>
+            <div class="sb-promo-text-side">
+                <div class="sb-promo-title">Reserve your seat now!</div>
+                <div class="sb-promo-desc">Share your favorites with someone special this coffee season.</div>
+                <a class="sb-promo-btn" style="color: #1e3932; border-color: #1e3932;" href="?page=RESERVATIONS" target="_self"> &nbsp;&nbsp;Reserve a Seat</a>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with promo_col2:
+        st.markdown(f"""
+        <div class="sb-promo-container" style="background-color: #f9f9fa; background: #f2d1ca;">
+            <div class="sb-promo-text-side">
+                <div class="sb-promo-title">Leave us a review</div>
+                <div class="sb-promo-desc">Share your experience with us and help us improve.</div>
+                <a class="sb-promo-btn" style="color: #1e3932; border-color: #1e3932;" href="?page=FEEDBACK" target="_self"> &nbsp;&nbsp;Leave Feedback</a>
+            </div>
+            <div class="sb-promo-img-side" style="background-image: url('{promo_b64_right}');"></div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # ASYMMETRIC IMAGE GRID IN PROMOS SECTION
+    grid_img_main = get_b64_image("images/promo1.jpg")
+    grid_img_sub1 = get_b64_image("images/promo6.jpg")
+    grid_img_sub2 = get_b64_image("images/promo3.jpg")
+    grid_img_sub3 = get_b64_image("images/promo2.jpg")
+    grid_img_sub4 = get_b64_image("images/promo5.jpg")
+
+    st.markdown(f"""
+    <div class="sb-grid-layout">
+        <div class="sb-grid-left-featured">
+            <img src="{grid_img_main}" alt="Monthly Promotions">
+        </div>
+        <div class="sb-grid-right-stack">
+            <div class="sb-grid-item"><img src="{grid_img_sub1}"></div>
+            <div class="sb-grid-item"><img src="{grid_img_sub2}"></div>
+            <div class="sb-grid-item"><img src="{grid_img_sub3}"></div>
+            <div class="sb-grid-item"><img src="{grid_img_sub4}"></div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+elif selected_route == "MENU":
+    # --------------------------------------------------
+    # ISOLATED MENU COMPONENT PAGE
+    # --------------------------------------------------
     st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center;'>Explore Our Signature Menu</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center; color:#92a4b8; margin-bottom:30px;'>Crafted to give you the perfect boost</p>", unsafe_allow_html=True)
 
@@ -501,7 +667,7 @@ if selected_route == "HOME + MENU":
                 </div>
             </div>
             """, unsafe_allow_html=True)
-
+            
 elif selected_route == "RESERVATIONS":
     st.markdown("<h3 style='color:#ffffff; font-weight:700; margin-bottom:20px;'>Secure Orders & Bookings</h3>", unsafe_allow_html=True)
     b_col1, b_col2 = st.columns(2, gap="large")
@@ -1443,7 +1609,7 @@ with col2:
     # Grid Ikon Media Sosial Atas
     st.markdown("""
         <div style="display: flex; gap: 15px; margin-bottom: 25px;">
-            <a href="https://www.facebook.com/TiapHariKopi" target="_blank">
+            <a href="https://www.facebook.com/tiapharikopimy/?locale=ms_MY" target="_blank">
                 <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="45">
             </a>
             <a href="https://www.instagram.com/TiapHariKopi" target="_blank">
