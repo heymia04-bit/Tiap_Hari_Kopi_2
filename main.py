@@ -4,6 +4,8 @@ import plotly.express as px
 import PIL
 import base64
 import os
+import requests
+import re
 
 # --------------------------------------------------
 # 1. SET PAGE CONFIG & TIAP HARI KOPI THEME CSS
@@ -512,6 +514,10 @@ st.markdown(f"""
 # ==================================================
 
 if selected_route == "HOME":
+    # 0. INJECT SCRIPTS & ANCHOR FOR SCRIPTED SCROLL-TO-TOP TARGET
+    # This creates an empty invisible target anchor at the top of the body execution line
+    st.markdown('<div id="top-anchor"></div>', unsafe_allow_html=True)
+
     st.markdown('<div class="nk-hero-title">Local Coffee, Premium Vibes.</div>', unsafe_allow_html=True)
     st.markdown('<div class="nk-hero-subtitle">Every Single Day Perfection</div>', unsafe_allow_html=True)
 
@@ -566,6 +572,110 @@ if selected_route == "HOME":
     st.components.v1.html(home_slider_html, height=500)
 
     st.markdown("<hr style='border-color: #1a2636; margin: 50px 0;'>", unsafe_allow_html=True)
+
+    # 3. INTERACTIVE FIXED BOTTOM-RIGHT "GO TO TOP" COMPONENT
+    # Native CSS + Safe Global Window Canvas Scroller avoiding cross-origin errors.
+    st.markdown("""
+    <div class="scroll-wrapper-global">
+        <button id="scrollToTopBtnGlobal" title="Go to top">
+            <span class="arrow-icon">▲</span>
+            <span class="btn-text">GO TO TOP</span>
+        </button>
+    </div>
+
+    <style>
+        /* Forces fixed bottom-right position across layout canvas zones */
+        .scroll-wrapper-global {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 999999;
+        }
+        
+        /* Flex block stacking elements vertically */
+        #scrollToTopBtnGlobal {
+            display: none; /* Managed by JavaScript scroll threshold below */
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0;
+            margin: 0;
+        }
+        
+        /* Upper Circle Frame containing arrow character direction */
+        #scrollToTopBtnGlobal .arrow-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background-color: #004481; /* Branded Logo Blue */
+            color: white !important;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        
+        /* Bottom explicit text layout text */
+        #scrollToTopBtnGlobal .btn-text {
+            font-family: 'Montserrat', sans-serif;
+            color: #92a4b8;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+        
+        /* Interactive hovering transforms */
+        #scrollToTopBtnGlobal:hover .arrow-icon {
+            background-color: #003361;
+            transform: scale(1.1);
+        }
+        
+        #scrollToTopBtnGlobal:hover .btn-text {
+            color: #ffffff;
+        }
+    </style>
+
+    <script>
+        (function() {
+            // Gains target control over root execution node inside Streamlit's structural engine
+            const mainCanvas = window.parent.document.querySelector('[data-testid="stAppViewContainer"]');
+            const scrollActionBtn = window.parent.document.getElementById("scrollToTopBtnGlobal");
+
+            if (mainCanvas && scrollActionBtn) {
+                // Clear old listener iterations on application redraws
+                mainCanvas.onscroll = null;
+                
+                // Show button only after scrolling past 300px threshold height
+                mainCanvas.onscroll = function() {
+                    if (mainCanvas.scrollTop > 300) {
+                        scrollActionBtn.style.setProperty('display', 'flex', 'important');
+                    } else {
+                        scrollActionBtn.style.setProperty('display', 'none', 'important');
+                    }
+                };
+
+                // Triggers a complete top reset, scrolling completely to 0 coordinate plane
+                scrollActionBtn.onclick = function() {
+                    mainCanvas.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                };
+            }
+        })();
+    </script>
+    """, unsafe_allow_html=True)
     
     # --------------------------------------------------
     # NEW PROMOTIONS AND ANNOUNCEMENT SECTION (STARBUCKS DESIGN)
@@ -1088,7 +1198,7 @@ elif selected_route == "ABOUT US":
     </div>
     """, unsafe_allow_html=True)
 
-    # ------------------------------------------------------------------
+# ------------------------------------------------------------------
     # CENTRALIZED DIGITAL BRANDING SECTION (NOW INSIDE THE ABOUT US ROUTE)
     # ------------------------------------------------------------------
     st.markdown("<hr style='border-color: #1a2636; margin: 50px 0;'>", unsafe_allow_html=True)
@@ -1096,6 +1206,10 @@ elif selected_route == "ABOUT US":
     st.markdown("<p style='text-align:center; color:#92a4b8; margin-bottom:40px;'>Experience our daily live updates on phone views. Click to redirect to our official profiles.</p>", unsafe_allow_html=True)
 
     placeholder_img = b64_srcs[1] # Base image asset reference is safe here now!
+
+    # Generate custom Base64 image sources for the platform grids
+    ig_srcs = [get_b64_image(f"images/ig{i}.jpg") for i in range(1, 10)]
+    fb_srcs = [get_b64_image(f"images/fb{i}.jpg") for i in range(1, 10)]
 
     social_col1, social_col2 = st.columns(2)
 
@@ -1315,15 +1429,15 @@ elif selected_route == "ABOUT US":
                         <div class="mock-btn mock-btn-arrow">∨</div>
                     </div>
                     <div class="grid-feed">
-                        <img class="feed-img" src="{placeholder_img}">
-                        <img class="feed-img" src="{b64_srcs[3]}">
-                        <img class="feed-img" src="{b64_srcs[4]}">
-                        <img class="feed-img" src="{b64_srcs[5]}">
-                        <img class="feed-img" src="{b64_srcs[6]}">
-                        <img class="feed-img" src="{b64_srcs[0]}">
-                        <img class="feed-img" src="{b64_srcs[7]}">
-                        <img class="feed-img" src="{b64_srcs[8]}">
-                        <img class="feed-img" src="{b64_srcs[2]}">
+                        <img class="feed-img" src="{ig_srcs[0]}">
+                        <img class="feed-img" src="{ig_srcs[1]}">
+                        <img class="feed-img" src="{ig_srcs[2]}">
+                        <img class="feed-img" src="{ig_srcs[3]}">
+                        <img class="feed-img" src="{ig_srcs[4]}">
+                        <img class="feed-img" src="{ig_srcs[5]}">
+                        <img class="feed-img" src="{ig_srcs[6]}">
+                        <img class="feed-img" src="{ig_srcs[7]}">
+                        <img class="feed-img" src="{ig_srcs[8]}">
                         <img class="feed-img" src="{placeholder_img}">
                         <img class="feed-img" src="{b64_srcs[3]}">
                         <img class="feed-img" src="{b64_srcs[5]}">
@@ -1496,15 +1610,15 @@ elif selected_route == "ABOUT US":
                         <div class="mock-btn">Message</div>
                     </div>
                     <div class="grid-feed">
-                        <img class="feed-img" src="{b64_srcs[5]}">
-                        <img class="feed-img" src="{b64_srcs[6]}">
-                        <img class="feed-img" src="{placeholder_img}">
-                        <img class="feed-img" src="{b64_srcs[7]}">
-                        <img class="feed-img" src="{b64_srcs[8]}">
-                        <img class="feed-img" src="{b64_srcs[2]}">
-                        <img class="feed-img" src="{placeholder_img}">
-                        <img class="feed-img" src="{b64_srcs[3]}">
-                        <img class="feed-img" src="{b64_srcs[4]}">
+                        <img class="feed-img" src="{fb_srcs[0]}">
+                        <img class="feed-img" src="{fb_srcs[1]}">
+                        <img class="feed-img" src="{fb_srcs[2]}">
+                        <img class="feed-img" src="{fb_srcs[3]}">
+                        <img class="feed-img" src="{fb_srcs[4]}">
+                        <img class="feed-img" src="{fb_srcs[5]}">
+                        <img class="feed-img" src="{fb_srcs[6]}">
+                        <img class="feed-img" src="{fb_srcs[7]}">
+                        <img class="feed-img" src="{fb_srcs[8]}">
                     </div>
                 </div>
             </div>
@@ -1542,12 +1656,54 @@ elif selected_route == "LOG IN":
         st.button("Authenticate & Log In")
 
 # ==================================================
+# HELPER FUNCTIONS TO FETCH LIVE FOLLOWER COUNTS
+# ==================================================
+@st.cache_data(ttl=10800) # Cache counts for 3 hours to avoid getting blocked/banned
+def get_live_followers():
+    # Default fallbacks (your current values)
+    counts = {
+        "facebook": "3.3K",
+        "instagram": "3,331",
+        "tiktok": "766"
+    }
+    
+    # 1. ATTEMPT INSTAGRAM EXTRACTION (via JSON trick)
+    try:
+        ig_url = "https://www.instagram.com/tiapharikopi/?__a=1&__d=dis"
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+        response = requests.get(ig_url, headers=headers, timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            count = data['graphql']['user']['edge_followed_by']['count']
+            counts["instagram"] = f"{count:,}"
+    except:
+        pass # Fallback quietly if blocked
+        
+    # 2. ATTEMPT TIKTOK EXTRACTION (via OEmbed/HTML regex)
+    try:
+        tt_url = "https://www.tiktok.com/@tiapharikopi"
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+        res = requests.get(tt_url, headers=headers, timeout=5)
+        match = re.search(r'"followerCount":(\d+)', res.text)
+        if match:
+            count = int(match.group(1))
+            counts["tiktok"] = f"{count:,}" if count < 1000 else f"{count/1000:.1f}K"
+    except:
+        pass
+
+    return counts
+
+# Fetch the active counts dynamically
+live_counts = get_live_followers()
+
+# ==================================================
 # FOOTER SECTION (Tiap Hari Kopi Style)
 # ==================================================
 
 # Jarak atas dan garisan pemisah
 st.markdown("<br><br>", unsafe_allow_html=True)
 st.markdown("---")
+
 
 # Menggunakan 2 kolum utama untuk susun atur kiri & kanan
 col1, col2 = st.columns([1.1, 0.9], gap="large")
@@ -1621,20 +1777,20 @@ with col2:
         </div>
     """, unsafe_allow_html=True)
     
-    # Statistik Followers
-    st.markdown("""
+    # Statistik Followers (Updated to print dynamic live values seamlessly)
+    st.markdown(f"""
         <div style="font-size: 16px; font-family: sans-serif; color: #E0E0E0; display: flex; flex-direction: column; gap: 15px;">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="24">
-                <span><b>Facebook : 3.3K Followers</b></span>
+                <span><b>Facebook : {live_counts['facebook']} Followers</b></span>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
                 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="24">
-                <span><b>Instagram : 3,331 Followers</b></span>
+                <span><b>Instagram : {live_counts['instagram']} Followers</b></span>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
                 <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="24">
-                <span><b>TikTok : 766 Followers</b></span>
+                <span><b>TikTok : {live_counts['tiktok']} Followers</b></span>
             </div>
         </div>
     """, unsafe_allow_html=True)
@@ -1660,6 +1816,23 @@ st.markdown("""
 
 # Garisan pemisah halus sebelum hak cipta
 st.markdown("<br><hr style='border-top: 1px solid rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
+
+# --- FOOTER NAVIGATION LINKS (Placed right on top of the footer columns) ---
+st.markdown(f"""
+    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 5px; margin-bottom: 30px; font-family: sans-serif; font-size: 14px; letter-spacing: 0.5px;">
+        <a class="{get_active_class('HOME')}" href="?page=HOME" target="_self" style="text-decoration: none; font-weight: bold;">HOME</a> 
+        <span style="color: #444444;">&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span> 
+        <a class="{get_active_class('MENU')}" href="?page=MENU" target="_self" style="text-decoration: none; font-weight: bold;">MENU</a> 
+        <span style="color: #444444;">&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span> 
+        <a class="{get_active_class('RESERVATIONS')}" href="?page=RESERVATIONS" target="_self" style="text-decoration: none; font-weight: bold;">RESERVATIONS</a> 
+        <span style="color: #444444;">&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span> 
+        <a class="{get_active_class('FEEDBACK')}" href="?page=FEEDBACK" target="_self" style="text-decoration: none; font-weight: bold;">FEEDBACK</a> 
+        <span style="color: #444444;">&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span> 
+        <a class="{get_active_class('ABOUT US')}" href="?page=ABOUT US" target="_self" style="text-decoration: none; font-weight: bold;">ABOUT US</a> 
+        <span style="color: #444444;">&nbsp;&nbsp;&bull;&nbsp;&nbsp;</span> 
+        <a class="{get_active_class('LOG IN')}" href="?page=LOG IN" target="_self" style="text-decoration: none; font-weight: bold;">LOG IN</a>
+    </div>
+""", unsafe_allow_html=True)
 
 # Hak Cipta & Inspirasi Template
 st.markdown("""
