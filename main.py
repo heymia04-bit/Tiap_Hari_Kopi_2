@@ -734,7 +734,7 @@ elif selected_route == "RESERVATIONS":
             <p style="color:#555555; font-size:14px;">Skip the queue! Book your table session seamlessly with our baristas online.</p>
         </div>
         """, unsafe_allow_html=True)
-        st.link_button("Book Table via WhatsApp", "https://wa.me/60123456789")
+        st.link_button("Book Table via WhatsApp", "https://wa.me/60134944337")
     with b_col2:
         st.markdown("""
         <div class="nk-card">
@@ -742,7 +742,7 @@ elif selected_route == "RESERVATIONS":
             <p style="color:#555555; font-size:14px;">Craving our local snacks or main courses? Hit the button below to buy on GrabFood.</p>
         </div>
         """, unsafe_allow_html=True)
-        st.link_button("Find Us On GrabFood", "https://r.grab.com/")
+        st.link_button("Find Us On GrabFood", "https://r.grab.com/g/6-20260612_211256_9ef30256bb924d40bac7573c90142773_MEXMPS-1-C3NTVKDZLZCHTJ")
 
     # --------------------------------------------------
     # FIXED GOOGLE MAP COMPONENT RIGHT HERE 
@@ -764,7 +764,7 @@ elif selected_route == "RESERVATIONS":
     </div>
     """
     st.components.v1.html(map_iframe_html, height=500)
-
+    
 elif selected_route == "FEEDBACK":
     st.markdown("<h2 style='color: white; margin-bottom: 20px; text-align:center;'>Customer Feedback Hub</h2>", unsafe_allow_html=True)
     
