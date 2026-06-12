@@ -1067,39 +1067,10 @@ elif selected_route == "ABOUT US":
     st.markdown("<h2 style='color:#ffffff; font-weight:700; margin-bottom:5px;'>About Us</h2>", unsafe_allow_html=True)
     st.markdown("<p style='color:#b0b3b8; font-size:16px; margin-bottom:25px;'>Get to know the story behind Tiap Hari Kopi.</p>", unsafe_allow_html=True)
     
-    # Using a container to create a nice bordered card effect
-    with st.container(border=True):
-        st.markdown("### ☕ Welcome to Tiap Hari Kopi")
-        st.write(
-            "Established in 2021, Tiap Hari Kopi is your go-to local cafe in **Kubang Kerian**. "
-            "We pride ourselves on creating a warm, vibrant space where community, comfort and great food come together."
-        )
-        
-        st.write("---") # Thin divider line
-        
-        # Creating two columns for quick details
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("#### 📍 Strategic Location")
-            st.write(
-                "Conveniently situated near McDonald's Kubang Kerian, "
-                "USM colleges and student hostels—making us the perfect neighborhood spot."
-            )
-            
-            st.markdown("#### 🌐 Study & Discussion Friendly")
-            st.write("Equipped with high-speed **Free Wi-Fi** we offers a comfortable and productive space for students and professionals alike.")
-            
-        with col2:
-            st.markdown("#### 🍳 Fusion Menu")
-            st.write("Enjoy a unique culinary experience featuring a delightful combination of **Eastern & Western food** alongside premium coffee beverages.")
-            
-            st.markdown("#### 👥 Welcoming Everyone")
-            st.write("While our main heartbeat is to serve the vibrant student community, our doors are open to all age groups from children to the elderly.")
-    
-
-    st.markdown("<hr style='border-color: #1a2636; margin: 40px 0;'>", unsafe_allow_html=True)
-    st.header("📸 Gallery and Our Story")
+    # ------------------------------------------------------------------
+    # 1. VISUAL GALLERY & STORY HIGHLIGHT (Moved Up to Capture Interest First)
+    # ------------------------------------------------------------------
+    st.markdown("### 📸 Gallery and Our Story")
 
     slider_images = [
         "images/tiapharibefore.jpg",
@@ -1169,22 +1140,52 @@ elif selected_route == "ABOUT US":
     st.components.v1.html(slider_html, height=315)
 
     st.markdown("""
-    <div style='background-color:#004481; color:#ffffff; padding:20px; border-radius:15px; margin-top:25px; text-align:center; font-size:16px; font-weight:600;'>
+    <div style='background-color:#004481; color:#ffffff; padding:20px; border-radius:15px; margin-top:15px; margin-bottom:30px; text-align:center; font-size:16px; font-weight:600;'>
         ✨ Our journey started from a small idea and grew into a cozy café loved by many. <br>
         Every cup of coffee we serve carries passion, comfort and a little bit of happiness ☕💛
     </div>
     """, unsafe_allow_html=True)
 
     # ------------------------------------------------------------------
-    # CENTRALIZED DIGITAL BRANDING SECTION (NOW INSIDE THE ABOUT US ROUTE)
+    # 2. CORE VALUE PROPOSITION CARD
     # ------------------------------------------------------------------
-    st.markdown("<hr style='border-color: #1a2636; margin: 50px 0;'>", unsafe_allow_html=True)
-    st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center; margin-bottom:10px;'>📲Social Media Hub</h2>", unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown("### ☕ Welcome to Tiap Hari Kopi")
+        st.write(
+            "Established in 2021, Tiap Hari Kopi is your go-to local cafe in **Kubang Kerian**. "
+            "We pride ourselves on creating a warm, vibrant space where community, comfort and great food come together."
+        )
+        
+        st.write("---") 
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("#### 📍 Strategic Location")
+            st.write(
+                "Conveniently situated near McDonald's Kubang Kerian, "
+                "USM colleges and student hostels—making us the perfect neighborhood spot."
+            )
+            
+            st.markdown("#### 🌐 Study & Discussion Friendly")
+            st.write("Equipped with high-speed **Free Wi-Fi** we offers a comfortable and productive space for students and professionals alike.")
+            
+        with col2:
+            st.markdown("#### 🍳 Fusion Menu")
+            st.write("Enjoy a unique culinary experience featuring a delightful combination of **Eastern & Western food** alongside premium coffee beverages.")
+            
+            st.markdown("#### 👥 Welcoming Everyone")
+            st.write("While our main heartbeat is to serve the vibrant student community, our doors are open to all age groups from children to the elderly.")
+
+    # ------------------------------------------------------------------
+    # 3. INTERACTIVE DIGITAL BRANDING HUBS
+    # ------------------------------------------------------------------
+    st.markdown("<hr style='border-color: #1a2636; margin: 40px 0;'>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center; margin-bottom:10px;'>📲 Social Media Hub</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center; color:#92a4b8; margin-bottom:40px;'>Experience our daily live updates on phone views. Click to redirect to our official profiles.</p>", unsafe_allow_html=True)
 
-    placeholder_img = b64_srcs[1] # Base image asset reference is safe here now!
+    placeholder_img = b64_srcs[1] 
 
-    # Generate custom Base64 image sources for the platform grids
     ig_srcs = [get_b64_image(f"images/ig{i}.jpg") for i in range(1, 10)]
     fb_srcs = [get_b64_image(f"images/fb{i}.jpg") for i in range(1, 10)]
 
@@ -1606,16 +1607,14 @@ elif selected_route == "ABOUT US":
     # ==================================================
     # HELPER FUNCTIONS TO FETCH LIVE FOLLOWER COUNTS
     # ==================================================
-    @st.cache_data(ttl=10800) # Cache counts for 3 hours to avoid getting blocked/banned
+    @st.cache_data(ttl=10800) 
     def get_live_followers():
-        # Default fallbacks (your current values)
         counts = {
             "facebook": "3.3K",
             "instagram": "3,331",
             "tiktok": "766"
         }
         
-        # 1. ATTEMPT INSTAGRAM EXTRACTION (via JSON trick)
         try:
             ig_url = "https://www.instagram.com/tiapharikopi/?__a=1&__d=dis"
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -1625,9 +1624,8 @@ elif selected_route == "ABOUT US":
                 count = data['graphql']['user']['edge_followed_by']['count']
                 counts["instagram"] = f"{count:,}"
         except:
-            pass # Fallback quietly if blocked
+            pass 
             
-        # 2. ATTEMPT TIKTOK EXTRACTION (via OEmbed/HTML regex)
         try:
             tt_url = "https://www.tiktok.com/@tiapharikopi"
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -1641,26 +1639,20 @@ elif selected_route == "ABOUT US":
 
         return counts
 
-    # Fetch the active counts dynamically
     live_counts = get_live_followers()
 
     # ==================================================
     # FOOTER SECTION (Tiap Hari Kopi Style)
     # ==================================================
-
-    # Jarak atas dan garisan pemisah
     st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown("---")
 
-
-    # Menggunakan 2 kolum utama untuk susun atur kiri & kanan
     col1, col2 = st.columns([1.1, 0.9], gap="large")
 
     # =====================================
     # SEKSYEN KIRI (Header, About Us, Visit Hub, Call)
     # =====================================
     with col1:
-        # Nama Kedai & Ikon Kopi
         st.markdown("""
             <div style="display: flex; align-items: center; gap: 15px; margin-bottom: -10px;">
                 <h1 style="color: #E0F7FA; font-family: 'Arial Black', sans-serif; font-size: 42px; font-weight: 900; letter-spacing: 1px; margin: 0;">TIAP HARI KOPI</h1>
@@ -1668,14 +1660,12 @@ elif selected_route == "ABOUT US":
             </div>
         """, unsafe_allow_html=True)
         
-        # About Us
         st.markdown("""
             <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 25px; margin-bottom: 10px;">About Us</h2>
             <p style="color: #E0E0E0; font-size: 15px; margin-bottom: 5px;">Every single cup carries raw passion, home comfort, and a little bit of daily happiness.</p>
             <p style="font-size: 16px; margin-top: 0;">🤎</p>
         """, unsafe_allow_html=True)
         
-        # Visit Our Hub
         st.markdown("""
             <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 25px; margin-bottom: 10px;">📍 Visit Our Hub</h2>
             <p style="color: #E0E0E0; font-size: 15px; line-height: 1.6;">
@@ -1685,7 +1675,6 @@ elif selected_route == "ABOUT US":
         
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # Call Us
         st.markdown("""
             <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 10px; margin-bottom: 15px;">📞 Call Us</h2>
             <div style="display: flex; align-items: center; gap: 15px;">
@@ -1705,12 +1694,10 @@ elif selected_route == "ABOUT US":
     # SEKSYEN KANAN (Connect With Us & Followers)
     # =====================================
     with col2:
-        # Connect With Us Title
         st.markdown("""
             <h2 style="color: #F3E5D8; font-size: 26px; margin-bottom: 15px;">🔗 Connect With Us</h2>
         """, unsafe_allow_html=True)
         
-        # Grid Ikon Media Sosial Atas
         st.markdown("""
             <div style="display: flex; gap: 15px; margin-bottom: 25px;">
                 <a href="https://www.facebook.com/tiapharikopimy/?locale=ms_MY" target="_blank">
@@ -1725,7 +1712,6 @@ elif selected_route == "ABOUT US":
             </div>
         """, unsafe_allow_html=True)
         
-        # Statistik Followers (Updated to print dynamic live values seamlessly)
         st.markdown(f"""
             <div style="font-size: 16px; font-family: sans-serif; color: #E0E0E0; display: flex; flex-direction: column; gap: 15px;">
                 <div style="display: flex; align-items: center; gap: 12px;">
@@ -1748,7 +1734,6 @@ elif selected_route == "ABOUT US":
     # =====================================
     st.markdown("<br><br>", unsafe_allow_html=True)
 
-    # Opening Hours (Sama tulisan sebiji seperti dalam gambar)
     st.markdown("""
         <div style="margin-top: 10px; margin-bottom: 20px;">
             <h2 style="color: #F3E5D8; font-size: 28px; display: flex; align-items: center; gap: 10px;">
@@ -1761,7 +1746,6 @@ elif selected_route == "ABOUT US":
             </ul>
         </div>
     """, unsafe_allow_html=True)
-
 
 elif selected_route == "LOG IN":
     st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center;'>🔒 Internal Portal & Analytics</h2>", unsafe_allow_html=True)
