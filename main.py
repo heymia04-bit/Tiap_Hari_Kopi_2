@@ -744,16 +744,16 @@ elif selected_route == "RESERVATIONS":
         """, unsafe_allow_html=True)
         st.link_button("Find Us On GrabFood", "https://r.grab.com/g/6-20260612_211256_9ef30256bb924d40bac7573c90142773_MEXMPS-1-C3NTVKDZLZCHTJ")
 
-    # --------------------------------------------------
+# --------------------------------------------------
     # FIXED GOOGLE MAP COMPONENT RIGHT HERE 
     # --------------------------------------------------
     st.markdown("<h3 style='color:#ffffff; font-weight:700; margin-top:25px; margin-bottom:1.5px;'>Or come find us here!</h3>", unsafe_allow_html=True)
     
-    # Updated embed block targeted exactly to Tiap Hari Kopi's specific CID / place token
+    # Updated embed block targeted exactly to Tiap Hari Kopi's specific CID / place token with internal zoom fixed
     map_iframe_html = """
     <div style="width: 100%; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border: 1px solid #1a2636;">
         <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15869.569474771694!2d102.2779677!3d6.0939054!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6b11d04d558df%3A0xa8946be7fee39ef5!2sTiap%20Hari%20Kopi!5e0!3m2!1sen!2smy!4v1718220000000!5m2!1sen!2smy" 
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3000.0!2d102.2779677!3d6.0939054!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6b11d04d558df%3A0xa8946be7fee39ef5!2sTiap%20Hari%20Kopi!5e0!3m2!1sen!2smy!4v1718220000000!5m2!1sen!2smy" 
             width="100%" 
             height="480" 
             style="border:0;" 
@@ -764,7 +764,7 @@ elif selected_route == "RESERVATIONS":
     </div>
     """
     st.components.v1.html(map_iframe_html, height=500)
-    
+
 elif selected_route == "FEEDBACK":
     st.markdown("<h2 style='color: white; margin-bottom: 20px; text-align:center;'>Customer Feedback Hub</h2>", unsafe_allow_html=True)
     
