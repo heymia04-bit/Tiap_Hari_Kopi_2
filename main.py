@@ -1072,7 +1072,7 @@ elif selected_route == "ABOUT US":
         st.markdown("### ☕ Welcome to Tiap Hari Kopi")
         st.write(
             "Established in 2021, Tiap Hari Kopi is your go-to local cafe in **Kubang Kerian**. "
-            "We pride ourselves on creating a warm, vibrant space where community, comfort, and great food come together."
+            "We pride ourselves on creating a warm, vibrant space where community, comfort and great food come together."
         )
         
         st.write("---") # Thin divider line
@@ -1084,18 +1084,18 @@ elif selected_route == "ABOUT US":
             st.markdown("#### 📍 Strategic Location")
             st.write(
                 "Conveniently situated near McDonald's Kubang Kerian, "
-                "USM colleges, and student hostels—making us the perfect neighborhood spot."
+                "USM colleges and student hostels—making us the perfect neighborhood spot."
             )
             
             st.markdown("#### 🌐 Study & Discussion Friendly")
-            st.write("Equipped with high-speed **Free Wi-Fi**, offering a comfortable and productive space for students and professionals alike.")
+            st.write("Equipped with high-speed **Free Wi-Fi** we offers a comfortable and productive space for students and professionals alike.")
             
         with col2:
             st.markdown("#### 🍳 Fusion Menu")
             st.write("Enjoy a unique culinary experience featuring a delightful combination of **Eastern & Western food** alongside premium coffee beverages.")
             
             st.markdown("#### 👥 Welcoming Everyone")
-            st.write("While our main heartbeat is to serve the vibrant student community, our doors are open to all age groups, from children to the elderly.")
+            st.write("While our main heartbeat is to serve the vibrant student community, our doors are open to all age groups from children to the elderly.")
     
 
     st.markdown("<hr style='border-color: #1a2636; margin: 40px 0;'>", unsafe_allow_html=True)
@@ -1171,7 +1171,7 @@ elif selected_route == "ABOUT US":
     st.markdown("""
     <div style='background-color:#004481; color:#ffffff; padding:20px; border-radius:15px; margin-top:25px; text-align:center; font-size:16px; font-weight:600;'>
         ✨ Our journey started from a small idea and grew into a cozy café loved by many. <br>
-        Every cup of coffee we serve carries passion, comfort, and a little bit of happiness ☕💛
+        Every cup of coffee we serve carries passion, comfort and a little bit of happiness ☕💛
     </div>
     """, unsafe_allow_html=True)
 
