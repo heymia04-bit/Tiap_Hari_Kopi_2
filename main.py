@@ -1064,8 +1064,39 @@ elif selected_route == "FEEDBACK":
                 st.error("Please fill in both your name and review text before submitting.")
 
 elif selected_route == "ABOUT US":
-    st.markdown("<h3 style='color:#ffffff; font-weight:700; margin-bottom:20px;'>About Us</h3>", unsafe_allow_html=True)
-    st.info("Every single cup carries raw passion, home comfort, and a little bit of daily happiness.")
+    st.markdown("<h2 style='color:#ffffff; font-weight:700; margin-bottom:5px;'>About Us</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#b0b3b8; font-size:16px; margin-bottom:25px;'>Get to know the story behind Tiap Hari Kopi.</p>", unsafe_allow_html=True)
+    
+    # Using a container to create a nice bordered card effect
+    with st.container(border=True):
+        st.markdown("### ☕ Welcome to Tiap Hari Kopi")
+        st.write(
+            "Established in 2021, Tiap Hari Kopi is your go-to local cafe in **Kubang Kerian**. "
+            "We pride ourselves on creating a warm, vibrant space where community, comfort, and great food come together."
+        )
+        
+        st.write("---") # Thin divider line
+        
+        # Creating two columns for quick details
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("#### 📍 Strategic Location")
+            st.write(
+                "Conveniently situated near McDonald's Kubang Kerian, "
+                "USM colleges, and student hostels—making us the perfect neighborhood spot."
+            )
+            
+            st.markdown("#### 🌐 Study & Discussion Friendly")
+            st.write("Equipped with high-speed **Free Wi-Fi**, offering a comfortable and productive space for students and professionals alike.")
+            
+        with col2:
+            st.markdown("#### 🍳 Fusion Menu")
+            st.write("Enjoy a unique culinary experience featuring a delightful combination of **Eastern & Western food** alongside premium coffee beverages.")
+            
+            st.markdown("#### 👥 Welcoming Everyone")
+            st.write("While our main heartbeat is to serve the vibrant student community, our doors are open to all age groups, from children to the elderly.")
+    
 
     st.markdown("<hr style='border-color: #1a2636; margin: 40px 0;'>", unsafe_allow_html=True)
     st.header("📸 Gallery and Our Story")
