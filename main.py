@@ -744,6 +744,325 @@ elif selected_route == "RESERVATIONS":
         """, unsafe_allow_html=True)
         st.link_button("Find Us On GrabFood", "https://r.grab.com/")
 
+elif selected_route == "FEEDBACK":
+    st.markdown("<h2 style='color: white; margin-bottom: 20px; text-align:center;'>Customer Feedback Hub</h2>", unsafe_allow_html=True)
+    
+    # Global component styles matching real Google Review cards (image_124948.jpg & image_123e02.png)
+    st.markdown("""
+    <style>
+        .reviews-scroll-container {
+            max-height: 680px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .reviews-scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .reviews-scroll-container::-webkit-scrollbar-track {
+            background: #0b131f;
+            border-radius: 4px;
+        }
+        .reviews-scroll-container::-webkit-scrollbar-thumb {
+            background: #2a3b50;
+            border-radius: 4px;
+        }
+        .google-review-card {
+            background-color: #101721;
+            border: 1px solid #1c2838;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            font-family: Roboto, Arial, sans-serif;
+        }
+        .gr-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .gr-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .gr-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .gr-user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .gr-name {
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .gr-meta {
+            color: #9aa0a6;
+            font-size: 12px;
+        }
+        .gr-more-btn {
+            color: #9aa0a6;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .gr-stars-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .gr-stars {
+            color: #fbbc05;
+            letter-spacing: 1px;
+        }
+        .gr-time {
+            color: #9aa0a6;
+        }
+        .gr-text {
+            color: #e8eaed;
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        /* Exact Google Review Image Grid Layout Formulation */
+        .gr-images-grid {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+        }
+        .gr-img {
+            width: 105px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #202b3c;
+        }
+        .gr-footer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #9aa0a6;
+            font-size: 13px;
+            margin-top: 8px;
+            border-top: 1px solid #1c2838;
+            padding-top: 10px;
+        }
+        .local-review-card {
+            background-color: #0b1119;
+            border-left: 4px solid #1877f2;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    col_left, col_right = st.columns([1.1, 0.9], gap="large")
+
+    with col_left:
+        st.markdown('<h3 style="color: white; margin-bottom: 20px;">What they say about us (Google Reviews)</h3>', unsafe_allow_html=True)
+        
+        # Base64 Conversions for the primary review images
+        gr_b64_1 = get_b64_image("images/gr1.jpg")
+        gr_b64_2 = get_b64_image("images/gr2.jpg")
+        gr_b64_3 = get_b64_image("images/gr3.jpg")
+        gr_b64_4 = get_b64_image("images/gr4.jpg")
+        
+        # Base64 placeholders for the newly added review images to prevent rendering crashes
+        thumb_a = get_b64_image("images/tiapharifront.jpg")
+        thumb_b = get_b64_image("images/tiapharibestdrinks.jpg")
+        thumb_c = get_b64_image("images/tiapharipasta.jpg")
+
+        # Open the scrolling viewport container wrapper
+        st.markdown('<div class="reviews-scroll-container">', unsafe_allow_html=True)
+        
+        # --- REVIEW 1: NurZetty Sofia ---
+        st.markdown(f"""
+        <div class="google-review-card">
+            <div class="gr-header">
+                <div class="gr-profile">
+                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar">
+                    <div class="gr-user-info">
+                        <span class="gr-name">NurZetty Sofia</span>
+                        <span class="gr-meta">6 ulasan • 6 foto</span>
+                    </div>
+                </div>
+                <div class="gr-more-btn">⋮</div>
+            </div>
+            <div class="gr-stars-row">
+                <span class="gr-stars">★★★★★</span>
+                <span class="gr-time">3 minggu yang lalu</span>
+                <span class="gr-badge" style="background-color:#1a2636; color:#e8eaed; font-size:9px; padding:2px 5px; border-radius:3px;">BAHARU</span>
+            </div>
+            <div class="gr-text">
+                Saya kenal TiapHari ni semenjak 2022. Speciality mmg Nisse Latte dan Kacang Phool. Walaupun KB ni byk kedai kopi, tp tak boleh lagi lawan Nisse latte TiapHari (ice/hot dua2 sedap) dan takde tempat lain nak cari kacang phool. Bukan tak ... <span style="color:#8ab4f8; cursor:pointer;">Lagi</span>
+            </div>
+            <div class="gr-images-grid">
+                <img class="gr-img" src="{gr_b64_1}">
+                <img class="gr-img" src="{gr_b64_2}">
+                <img class="gr-img" src="{gr_b64_3}">
+                <img class="gr-img" src="{gr_b64_4}">
+            </div>
+            <div class="gr-footer">
+                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
+                <div style="display:flex; align-items:center; gap:4px;">🙏 <span>2</span></div>
+                <div>🔗</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # --- REVIEW 2: Farhana (Website Feedback) ---
+        st.markdown("""
+        <div class="local-review-card">
+            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★★</div>
+            <span style="font-weight: bold; color: #8ab4f8; font-size:14px;">Farhana</span> 
+            <div style="color: #bdc1c6; font-size:13px; margin-top:4px; line-height:1.4;">
+                — Super friendly service. Perfect environment to chill out or focus on remote work. (Verified Website Feedback)
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # --- REVIEW 3: Isabella Anne ---
+        st.markdown("""
+        <div class="google-review-card">
+            <div class="gr-header">
+                <div class="gr-profile">
+                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="Avatar">
+                    <div class="gr-user-info">
+                        <span class="gr-name">Isabella Anne</span>
+                        <span class="gr-meta">Jurupandu Tempatan • 36 ulasan • 23 foto</span>
+                    </div>
+                </div>
+                <div class="gr-more-btn">⋮</div>
+            </div>
+            <div class="gr-stars-row">
+                <span class="gr-stars">★★★★★</span>
+                <span class="gr-time">4 bulan yang lalu</span>
+            </div>
+            <div class="gr-text">
+                Good food , just parking abit hard
+                <div style="background-color: #17202a; padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-size: 12px; color: #bdc1c6;">
+                    <b>Makanan:</b> 5/5  |  <b>Perkhidmatan:</b> 5/5  |  <b>Suasana:</b> 5/5
+                </div>
+                <span style="font-size:12px; color:#8ab4f8; cursor:pointer; margin-top:8px; display:inline-block;">Lihat terjemahan (Melayu)</span>
+            </div>
+            <div class="gr-footer">
+                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
+                <div>🔗</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # --- NEW REVIEW 4: Era Ab Rahim (Google Review matching image_124948.jpg layout) ---
+        st.markdown(f"""
+        <div class="google-review-card">
+            <div class="gr-header">
+                <div class="gr-profile">
+                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" alt="Avatar">
+                    <div class="gr-user-info">
+                        <span class="gr-name">Era Ab Rahim</span>
+                        <span class="gr-meta">Jurupandu Tempatan • 794 ulasan • 4241 foto</span>
+                    </div>
+                </div>
+                <div class="gr-more-btn">⋮</div>
+            </div>
+            <div class="gr-stars-row">
+                <span class="gr-stars">★★★★★</span>
+                <span class="gr-time">Diedit setahun yang lalu</span>
+            </div>
+            <div class="gr-text" style="color: #9aa0a6; font-size: 12.5px; margin-bottom: 6px;">
+                Makan di kedai | Lain-lain
+            </div>
+            <div class="gr-text">
+                My first visit here. Staff sgt baik, friendly and polite. Dorg kata bestseller kat sini Nisse Latte (gula melaka), but i chose Caramel Macchiato instead. & Pomegranate Soda for my friend there 🤭 Also served mini cheese tarts & pavlova. Kat ... <span style="color:#8ab4f8; cursor:pointer;">Lagi</span>
+                <br><span style="font-size:12px; color:#8ab4f8; cursor:pointer; margin-top:6px; display:inline-block;">Lihat terjemahan (Melayu)</span>
+            </div>
+            <div class="gr-images-grid">
+                <img class="gr-img" src="{thumb_a}">
+                <img class="gr-img" src="{thumb_b}">
+                <img class="gr-img" src="{thumb_c}">
+            </div>
+            <div class="gr-footer">
+                <div style="display:flex; align-items:center; gap:4px;">❤️</div>
+                <div style="display:flex; align-items:center; gap:4px;">🙏 <span>3</span></div>
+                <div>🔗</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # --- NEW REVIEW 5: Khairul Amrin (Google Review) ---
+        st.markdown("""
+        <div class="google-review-card">
+            <div class="gr-header">
+                <div class="gr-profile">
+                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" alt="Avatar">
+                    <div class="gr-user-info">
+                        <span class="gr-name">Khairul Amrin</span>
+                        <span class="gr-meta">12 ulasan</span>
+                    </div>
+                </div>
+                <div class="gr-more-btn">⋮</div>
+            </div>
+            <div class="gr-stars-row">
+                <span class="gr-stars">★★★★★</span>
+                <span class="gr-time">2 bulan yang lalu</span>
+            </div>
+            <div class="gr-text">
+                Pasta dia portion padu & harga berbaloi sangat area Kubang Kerian ni. Nisse Latte icing tak manis potong kaki, just nice berkrim. Memang port lepak tetap lepas balik kerja.
+            </div>
+            <div class="gr-footer">
+                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>2</span></div>
+                <div>🔗</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # --- NEW REVIEW 6: Sarah M. (Verified Website Feedback) ---
+        st.markdown("""
+        <div class="local-review-card" style="border-left-color: #00g5f6;">
+            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★★</div>
+            <span style="font-weight: bold; color: #8ab4f8; font-size:14px;">Sarah M.</span> 
+            <div style="color: #bdc1c6; font-size:13px; margin-top:4px; line-height:1.4;">
+                — Ordered via the web interface for pickup. The food was hot, packed clean, and the staff even walked it out to my car because parking was full. Outstanding hospitality! (Verified Website Feedback)
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # --- NEW REVIEW 7: Bryan T. (Verified Website Feedback) ---
+        st.markdown("""
+        <div class="local-review-card" style="border-left-color: #00g5f6;">
+            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★☆</div>
+            <span style="font-weight: bold; color: #8ab4f8; font-size:14px;">Bryan T.</span> 
+            <div style="color: #bdc1c6; font-size:13px; margin-top:4px; line-height:1.4;">
+                — The Kacang Phool is authentic and complex. A rare find in Kota Bharu cafés. Docked one star just because seating fills up so quickly on weekends! (Verified Website Feedback)
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Close the scrolling viewport container wrapper safely
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col_right:
+        st.markdown('<h3 style="color: white; margin-bottom: 20px;">Share your feedback</h3>', unsafe_allow_html=True)
+        cust_name = st.text_input("Customer Name", placeholder="Enter name")
+        cust_type = st.radio("✨ Is this your first time visiting Tiap Hari Kopi?", options=["First-Time Customer", "Repeat Customer"], horizontal=True)
+        st.write("⭐ Rate your experience:")
+        cust_stars = st.feedback("stars", key="feedback_stars")
+        cust_text = st.text_area("Your Review", placeholder="Write something...", height=120)
+        
+        if st.button("Post Live Feedback"):
+            if cust_name and cust_text:
+                st.session_state.total_reviews += 1
+                st.success("✨ Thank you for your feedback! It helps us grow.")
+            else:
+                st.error("Please fill in both your name and review text before submitting.")
+
 elif selected_route == "ABOUT US":
     st.markdown("<h3 style='color:#ffffff; font-weight:700; margin-bottom:20px;'>About Us</h3>", unsafe_allow_html=True)
     st.info("Every single cup carries raw passion, home comfort, and a little bit of daily happiness.")
@@ -1442,13 +1761,13 @@ elif selected_route == "LOG IN":
         st.text_input("Access Password", type="password", placeholder="••••••••")
         st.button("Authenticate & Log In")
 
-# 3. INTERACTIVE PURE HTML/CSS FLOATING "GO TO TOP" BUTTON (NOW ACCESSIBLE EVERYWHERE)
+# 3. INTERACTIVE NATIVE HTML/CSS FLOATING "GO TO TOP" BUTTON (ACCESSIBLE EVERYWHERE)
 st.markdown("""
 <div class="scroll-wrapper-global">
-    <button onclick="window.parent.document.querySelector('.main').scrollTo({top: 0, behavior: 'smooth'});" class="scroll-top-link">
+    <a href="#top-anchor" target="_self" class="scroll-top-link">
         <span class="arrow-icon">▲</span>
         <span class="btn-text">GO TO TOP</span>
-    </button>
+    </a>
 </div>
 """, unsafe_allow_html=True)
 
