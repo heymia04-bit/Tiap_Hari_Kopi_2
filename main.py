@@ -481,6 +481,9 @@ div.stButton > button:hover {
     justify-content: center;
     gap: 6px;
     cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
 }
 .scroll-top-link .arrow-icon {
     display: flex;
@@ -536,7 +539,6 @@ if "customer_metrics" not in st.session_state:
 
 # --- TRACK ACTIVE NAVIGATION ROUTE ---
 current_params = st.query_params
-# Default to "HOME" cleanly if no page URL argument parameter exists yet
 selected_route = current_params.get("page", "HOME")
 if isinstance(selected_route, list):
     selected_route = selected_route[0] if len(selected_route) > 0 else "HOME"
@@ -545,12 +547,9 @@ if isinstance(selected_route, list):
 def get_active_class(route_name):
     return "nk-nav-link active" if selected_route == route_name else "nk-nav-link"
 
-# --- TOP GLOBAL TARGET ANCHOR LINK ---
-# Absolute positioning forces the scrolling mechanism to target the true absolute top corner of the frame window layout.
-st.markdown('<div id="top-anchor" style="position: absolute; top: 0; left: 0;"></div>', unsafe_allow_html=True)
-
-# --- BRAND NAVIGATION HEADER ---
+# --- BRAND NAVIGATION HEADER (WITH TOP-ANCHOR DESTINATION INCLUDED) ---
 st.markdown(f"""
+<div id="top-anchor" style="position: relative; scroll-margin-top: 100px;"></div>
 <div class="nk-header">
     <div class="nk-logo">TIAP HARI <span>KOPI</span></div>
     <div class="nk-nav">
@@ -624,19 +623,8 @@ if selected_route == "HOME":
 
     st.markdown("<hr style='border-color: #1a2636; margin: 50px 0;'>", unsafe_allow_html=True)
 
-    # 3. INTERACTIVE FIXED BOTTOM-RIGHT "GO TO TOP" COMPONENT
-    # Fixed non-iframe native anchor execution targeting the outer body wrapper
-    st.markdown("""
-    <div class="scroll-wrapper-global">
-        <a href="#top-anchor" class="scroll-top-link" target="_self">
-            <span class="arrow-icon">▲</span>
-            <span class="btn-text">GO TO TOP</span>
-        </a>
-    </div>
-    """, unsafe_allow_html=True)
-    
     # --------------------------------------------------
-    # NEW PROMOTIONS AND ANNOUNCEMENT SECTION (STARBUCKS DESIGN)
+    # PROMOTIONS AND ANNOUNCEMENT SECTION (STARBUCKS DESIGN)
     # --------------------------------------------------
     st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center; margin-bottom: 35px;'>Promotions & Announcement</h2>", unsafe_allow_html=True)
     
@@ -689,63 +677,6 @@ if selected_route == "HOME":
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
-    # --------------------------------------------------
-    # NEW PROMOTIONS AND ANNOUNCEMENT SECTION (STARBUCKS DESIGN)
-    # --------------------------------------------------
-    st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center; margin-bottom: 35px;'>Promotions & Announcement</h2>", unsafe_allow_html=True)
-    
-    promo_b64_left = get_b64_image("images/waktuoperasi.jpg")
-    promo_b64_right = get_b64_image("images/feedbackpic.jpg")
-    
-    promo_col1, promo_col2 = st.columns(2, gap="large")
-    
-    with promo_col1:
-        st.markdown(f"""
-        <div class="sb-promo-container" style="background-color: #d4e9e2;">
-            <div class="sb-promo-img-side" style="background-image: url('{promo_b64_left}');"></div>
-            <div class="sb-promo-text-side">
-                <div class="sb-promo-title">Reserve your seat now!</div>
-                <div class="sb-promo-desc">Share your favorites with someone special this coffee season.</div>
-                <a class="sb-promo-btn" style="color: #1e3932; border-color: #1e3932;" href="?page=RESERVATIONS" target="_self"> &nbsp;&nbsp;Reserve a Seat</a>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with promo_col2:
-        st.markdown(f"""
-        <div class="sb-promo-container" style="background-color: #f9f9fa; background: #f2d1ca;">
-            <div class="sb-promo-text-side">
-                <div class="sb-promo-title">Leave us a review</div>
-                <div class="sb-promo-desc">Share your experience with us and help us improve.</div>
-                <a class="sb-promo-btn" style="color: #1e3932; border-color: #1e3932;" href="?page=FEEDBACK" target="_self"> &nbsp;&nbsp;Leave Feedback</a>
-            </div>
-            <div class="sb-promo-img-side" style="background-image: url('{promo_b64_right}');"></div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # ASYMMETRIC IMAGE GRID IN PROMOS SECTION
-    grid_img_main = get_b64_image("images/promo1.jpg")
-    grid_img_sub1 = get_b64_image("images/promo6.jpg")
-    grid_img_sub2 = get_b64_image("images/promo3.jpg")
-    grid_img_sub3 = get_b64_image("images/promo2.jpg")
-    grid_img_sub4 = get_b64_image("images/promo5.jpg")
-
-    st.markdown(f"""
-    <div class="sb-grid-layout">
-        <div class="sb-grid-left-featured">
-            <img src="{grid_img_main}" alt="Monthly Promotions">
-        </div>
-        <div class="sb-grid-right-stack">
-            <div class="sb-grid-item"><img src="{grid_img_sub1}"></div>
-            <div class="sb-grid-item"><img src="{grid_img_sub2}"></div>
-            <div class="sb-grid-item"><img src="{grid_img_sub3}"></div>
-            <div class="sb-grid-item"><img src="{grid_img_sub4}"></div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-# (Other selected routes remain functional and clean)
 
 elif selected_route == "MENU":
     # --------------------------------------------------
@@ -812,325 +743,6 @@ elif selected_route == "RESERVATIONS":
         </div>
         """, unsafe_allow_html=True)
         st.link_button("Find Us On GrabFood", "https://r.grab.com/")
-
-elif selected_route == "FEEDBACK":
-    st.markdown("<h2 style='color: white; margin-bottom: 20px; text-align:center;'>Customer Feedback Hub</h2>", unsafe_allow_html=True)
-    
-    # Global component styles matching real Google Review cards (image_124948.jpg & image_123e02.png)
-    st.markdown("""
-    <style>
-        .reviews-scroll-container {
-            max-height: 680px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-        .reviews-scroll-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        .reviews-scroll-container::-webkit-scrollbar-track {
-            background: #0b131f;
-            border-radius: 4px;
-        }
-        .reviews-scroll-container::-webkit-scrollbar-thumb {
-            background: #2a3b50;
-            border-radius: 4px;
-        }
-        .google-review-card {
-            background-color: #101721;
-            border: 1px solid #1c2838;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            font-family: Roboto, Arial, sans-serif;
-        }
-        .gr-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-        .gr-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .gr-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .gr-user-info {
-            display: flex;
-            flex-direction: column;
-        }
-        .gr-name {
-            color: #ffffff;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        .gr-meta {
-            color: #9aa0a6;
-            font-size: 12px;
-        }
-        .gr-more-btn {
-            color: #9aa0a6;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .gr-stars-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 13px;
-        }
-        .gr-stars {
-            color: #fbbc05;
-            letter-spacing: 1px;
-        }
-        .gr-time {
-            color: #9aa0a6;
-        }
-        .gr-text {
-            color: #e8eaed;
-            font-size: 13.5px;
-            line-height: 1.5;
-            margin-bottom: 12px;
-        }
-        /* Exact Google Review Image Grid Layout Formulation */
-        .gr-images-grid {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            overflow-x: auto;
-        }
-        .gr-img {
-            width: 105px;
-            height: 75px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #202b3c;
-        }
-        .gr-footer {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            color: #9aa0a6;
-            font-size: 13px;
-            margin-top: 8px;
-            border-top: 1px solid #1c2838;
-            padding-top: 10px;
-        }
-        .local-review-card {
-            background-color: #0b1119;
-            border-left: 4px solid #1877f2;
-            border-radius: 8px;
-            padding: 14px;
-            margin-bottom: 16px;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
-    col_left, col_right = st.columns([1.1, 0.9], gap="large")
-
-    with col_left:
-        st.markdown('<h3 style="color: white; margin-bottom: 20px;">What they say about us (Google Reviews)</h3>', unsafe_allow_html=True)
-        
-        # Base64 Conversions for the primary review images
-        gr_b64_1 = get_b64_image("images/gr1.jpg")
-        gr_b64_2 = get_b64_image("images/gr2.jpg")
-        gr_b64_3 = get_b64_image("images/gr3.jpg")
-        gr_b64_4 = get_b64_image("images/gr4.jpg")
-        
-        # Base64 placeholders for the newly added review images to prevent rendering crashes
-        thumb_a = get_b64_image("images/tiapharifront.jpg")
-        thumb_b = get_b64_image("images/tiapharibestdrinks.jpg")
-        thumb_c = get_b64_image("images/tiapharipasta.jpg")
-
-        # Open the scrolling viewport container wrapper
-        st.markdown('<div class="reviews-scroll-container">', unsafe_allow_html=True)
-        
-        # --- REVIEW 1: NurZetty Sofia ---
-        st.markdown(f"""
-        <div class="google-review-card">
-            <div class="gr-header">
-                <div class="gr-profile">
-                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar">
-                    <div class="gr-user-info">
-                        <span class="gr-name">NurZetty Sofia</span>
-                        <span class="gr-meta">6 ulasan • 6 foto</span>
-                    </div>
-                </div>
-                <div class="gr-more-btn">⋮</div>
-            </div>
-            <div class="gr-stars-row">
-                <span class="gr-stars">★★★★★</span>
-                <span class="gr-time">3 minggu yang lalu</span>
-                <span class="gr-badge" style="background-color:#1a2636; color:#e8eaed; font-size:9px; padding:2px 5px; border-radius:3px;">BAHARU</span>
-            </div>
-            <div class="gr-text">
-                Saya kenal TiapHari ni semenjak 2022. Speciality mmg Nisse Latte dan Kacang Phool. Walaupun KB ni byk kedai kopi, tp tak boleh lagi lawan Nisse latte TiapHari (ice/hot dua2 sedap) dan takde tempat lain nak cari kacang phool. Bukan tak ... <span style="color:#8ab4f8; cursor:pointer;">Lagi</span>
-            </div>
-            <div class="gr-images-grid">
-                <img class="gr-img" src="{gr_b64_1}">
-                <img class="gr-img" src="{gr_b64_2}">
-                <img class="gr-img" src="{gr_b64_3}">
-                <img class="gr-img" src="{gr_b64_4}">
-            </div>
-            <div class="gr-footer">
-                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
-                <div style="display:flex; align-items:center; gap:4px;">🙏 <span>2</span></div>
-                <div>🔗</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # --- REVIEW 2: Farhana (Website Feedback) ---
-        st.markdown("""
-        <div class="local-review-card">
-            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★★</div>
-            <span style="font-weight: bold; color: #8ab4f8; font-size:14px;">Farhana</span> 
-            <div style="color: #bdc1c6; font-size:13px; margin-top:4px; line-height:1.4;">
-                — Super friendly service. Perfect environment to chill out or focus on remote work. (Verified Website Feedback)
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # --- REVIEW 3: Isabella Anne ---
-        st.markdown("""
-        <div class="google-review-card">
-            <div class="gr-header">
-                <div class="gr-profile">
-                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="Avatar">
-                    <div class="gr-user-info">
-                        <span class="gr-name">Isabella Anne</span>
-                        <span class="gr-meta">Jurupandu Tempatan • 36 ulasan • 23 foto</span>
-                    </div>
-                </div>
-                <div class="gr-more-btn">⋮</div>
-            </div>
-            <div class="gr-stars-row">
-                <span class="gr-stars">★★★★★</span>
-                <span class="gr-time">4 bulan yang lalu</span>
-            </div>
-            <div class="gr-text">
-                Good food , just parking abit hard
-                <div style="background-color: #17202a; padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-size: 12px; color: #bdc1c6;">
-                    <b>Makanan:</b> 5/5  |  <b>Perkhidmatan:</b> 5/5  |  <b>Suasana:</b> 5/5
-                </div>
-                <span style="font-size:12px; color:#8ab4f8; cursor:pointer; margin-top:8px; display:inline-block;">Lihat terjemahan (Melayu)</span>
-            </div>
-            <div class="gr-footer">
-                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
-                <div>🔗</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # --- NEW REVIEW 4: Era Ab Rahim (Google Review matching image_124948.jpg layout) ---
-        st.markdown(f"""
-        <div class="google-review-card">
-            <div class="gr-header">
-                <div class="gr-profile">
-                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" alt="Avatar">
-                    <div class="gr-user-info">
-                        <span class="gr-name">Era Ab Rahim</span>
-                        <span class="gr-meta">Jurupandu Tempatan • 794 ulasan • 4241 foto</span>
-                    </div>
-                </div>
-                <div class="gr-more-btn">⋮</div>
-            </div>
-            <div class="gr-stars-row">
-                <span class="gr-stars">★★★★★</span>
-                <span class="gr-time">Diedit setahun yang lalu</span>
-            </div>
-            <div class="gr-text" style="color: #9aa0a6; font-size: 12.5px; margin-bottom: 6px;">
-                Makan di kedai | Lain-lain
-            </div>
-            <div class="gr-text">
-                My first visit here. Staff sgt baik, friendly and polite. Dorg kata bestseller kat sini Nisse Latte (gula melaka), but i chose Caramel Macchiato instead. & Pomegranate Soda for my friend there 🤭 Also served mini cheese tarts & pavlova. Kat ... <span style="color:#8ab4f8; cursor:pointer;">Lagi</span>
-                <br><span style="font-size:12px; color:#8ab4f8; cursor:pointer; margin-top:6px; display:inline-block;">Lihat terjemahan (Melayu)</span>
-            </div>
-            <div class="gr-images-grid">
-                <img class="gr-img" src="{thumb_a}">
-                <img class="gr-img" src="{thumb_b}">
-                <img class="gr-img" src="{thumb_c}">
-            </div>
-            <div class="gr-footer">
-                <div style="display:flex; align-items:center; gap:4px;">❤️</div>
-                <div style="display:flex; align-items:center; gap:4px;">🙏 <span>3</span></div>
-                <div>🔗</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # --- NEW REVIEW 5: Khairul Amrin (Google Review) ---
-        st.markdown("""
-        <div class="google-review-card">
-            <div class="gr-header">
-                <div class="gr-profile">
-                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" alt="Avatar">
-                    <div class="gr-user-info">
-                        <span class="gr-name">Khairul Amrin</span>
-                        <span class="gr-meta">12 ulasan</span>
-                    </div>
-                </div>
-                <div class="gr-more-btn">⋮</div>
-            </div>
-            <div class="gr-stars-row">
-                <span class="gr-stars">★★★★★</span>
-                <span class="gr-time">2 bulan yang lalu</span>
-            </div>
-            <div class="gr-text">
-                Pasta dia portion padu & harga berbaloi sangat area Kubang Kerian ni. Nisse Latte icing tak manis potong kaki, just nice berkrim. Memang port lepak tetap lepas balik kerja.
-            </div>
-            <div class="gr-footer">
-                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>2</span></div>
-                <div>🔗</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # --- NEW REVIEW 6: Sarah M. (Verified Website Feedback) ---
-        st.markdown("""
-        <div class="local-review-card" style="border-left-color: #00g5f6;">
-            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★★</div>
-            <span style="font-weight: bold; color: #8ab4f8; font-size:14px;">Sarah M.</span> 
-            <div style="color: #bdc1c6; font-size:13px; margin-top:4px; line-height:1.4;">
-                — Ordered via the web interface for pickup. The food was hot, packed clean, and the staff even walked it out to my car because parking was full. Outstanding hospitality! (Verified Website Feedback)
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # --- NEW REVIEW 7: Bryan T. (Verified Website Feedback) ---
-        st.markdown("""
-        <div class="local-review-card" style="border-left-color: #00g5f6;">
-            <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★☆</div>
-            <span style="font-weight: bold; color: #8ab4f8; font-size:14px;">Bryan T.</span> 
-            <div style="color: #bdc1c6; font-size:13px; margin-top:4px; line-height:1.4;">
-                — The Kacang Phool is authentic and complex. A rare find in Kota Bharu cafés. Docked one star just because seating fills up so quickly on weekends! (Verified Website Feedback)
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Close the scrolling viewport container wrapper safely
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with col_right:
-        st.markdown('<h3 style="color: white; margin-bottom: 20px;">Share your feedback</h3>', unsafe_allow_html=True)
-        cust_name = st.text_input("Customer Name", placeholder="Enter name")
-        cust_type = st.radio("✨ Is this your first time visiting Tiap Hari Kopi?", options=["First-Time Customer", "Repeat Customer"], horizontal=True)
-        st.write("⭐ Rate your experience:")
-        cust_stars = st.feedback("stars", key="feedback_stars")
-        cust_text = st.text_area("Your Review", placeholder="Write something...", height=120)
-        
-        if st.button("Post Live Feedback"):
-            if cust_name and cust_text:
-                st.session_state.total_reviews += 1
-                st.success("✨ Thank you for your feedback! It helps us grow.")
-            else:
-                st.error("Please fill in both your name and review text before submitting.")
 
 elif selected_route == "ABOUT US":
     st.markdown("<h3 style='color:#ffffff; font-weight:700; margin-bottom:20px;'>About Us</h3>", unsafe_allow_html=True)
@@ -1213,7 +825,7 @@ elif selected_route == "ABOUT US":
     </div>
     """, unsafe_allow_html=True)
 
-# ------------------------------------------------------------------
+    # ------------------------------------------------------------------
     # CENTRALIZED DIGITAL BRANDING SECTION (NOW INSIDE THE ABOUT US ROUTE)
     # ------------------------------------------------------------------
     st.markdown("<hr style='border-color: #1a2636; margin: 50px 0;'>", unsafe_allow_html=True)
@@ -1641,6 +1253,166 @@ elif selected_route == "ABOUT US":
         """
         st.components.v1.html(facebook_mock_html, height=660)
 
+    # ==================================================
+    # HELPER FUNCTIONS TO FETCH LIVE FOLLOWER COUNTS
+    # ==================================================
+    @st.cache_data(ttl=10800) # Cache counts for 3 hours to avoid getting blocked/banned
+    def get_live_followers():
+        # Default fallbacks (your current values)
+        counts = {
+            "facebook": "3.3K",
+            "instagram": "3,331",
+            "tiktok": "766"
+        }
+        
+        # 1. ATTEMPT INSTAGRAM EXTRACTION (via JSON trick)
+        try:
+            ig_url = "https://www.instagram.com/tiapharikopi/?__a=1&__d=dis"
+            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+            response = requests.get(ig_url, headers=headers, timeout=5)
+            if response.status_code == 200:
+                data = response.json()
+                count = data['graphql']['user']['edge_followed_by']['count']
+                counts["instagram"] = f"{count:,}"
+        except:
+            pass # Fallback quietly if blocked
+            
+        # 2. ATTEMPT TIKTOK EXTRACTION (via OEmbed/HTML regex)
+        try:
+            tt_url = "https://www.tiktok.com/@tiapharikopi"
+            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+            res = requests.get(tt_url, headers=headers, timeout=5)
+            match = re.search(r'"followerCount":(\d+)', res.text)
+            if match:
+                count = int(match.group(1))
+                counts["tiktok"] = f"{count:,}" if count < 1000 else f"{count/1000:.1f}K"
+        except:
+            pass
+
+        return counts
+
+    # Fetch the active counts dynamically
+    live_counts = get_live_followers()
+
+    # ==================================================
+    # FOOTER SECTION (Tiap Hari Kopi Style)
+    # ==================================================
+
+    # Jarak atas dan garisan pemisah
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("---")
+
+
+    # Menggunakan 2 kolum utama untuk susun atur kiri & kanan
+    col1, col2 = st.columns([1.1, 0.9], gap="large")
+
+    # =====================================
+    # SEKSYEN KIRI (Header, About Us, Visit Hub, Call)
+    # =====================================
+    with col1:
+        # Nama Kedai & Ikon Kopi
+        st.markdown("""
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: -10px;">
+                <h1 style="color: #E0F7FA; font-family: 'Arial Black', sans-serif; font-size: 42px; font-weight: 900; letter-spacing: 1px; margin: 0;">TIAP HARI KOPI</h1>
+                <span style="font-size: 38px;">☕</span>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        # About Us
+        st.markdown("""
+            <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 25px; margin-bottom: 10px;">About Us</h2>
+            <p style="color: #E0E0E0; font-size: 15px; margin-bottom: 5px;">Every single cup carries raw passion, home comfort, and a little bit of daily happiness.</p>
+            <p style="font-size: 16px; margin-top: 0;">🤎</p>
+        """, unsafe_allow_html=True)
+        
+        # Visit Our Hub
+        st.markdown("""
+            <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 25px; margin-bottom: 10px;">📍 Visit Our Hub</h2>
+            <p style="color: #E0E0E0; font-size: 15px; line-height: 1.6;">
+            Lot 2046, Kampung Gok Bata, Jalan Raja Perempuan Zainab II, <br>16150 Kota Bharu, Kelantan.
+            </p>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Call Us
+        st.markdown("""
+            <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 10px; margin-bottom: 15px;">📞 Call Us</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="tel:+60134944337" style="text-decoration: none;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3616/3616215.png" width="48" style="border-radius: 50%;">
+                </a>
+                <a href="tel:+60134944337" style="font-size: 28px; text-decoration: none; color: #E5A967; font-weight: bold; font-family: sans-serif;">
+                    013-4944337
+                </a>
+                <a href="https://wa.me/60134944337" target="_blank" style="text-decoration: none;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="48">
+                </a>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # =====================================
+    # SEKSYEN KANAN (Connect With Us & Followers)
+    # =====================================
+    with col2:
+        # Connect With Us Title
+        st.markdown("""
+            <h2 style="color: #F3E5D8; font-size: 26px; margin-bottom: 15px;">🔗 Connect With Us</h2>
+        """, unsafe_allow_html=True)
+        
+        # Grid Ikon Media Sosial Atas
+        st.markdown("""
+            <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+                <a href="https://www.facebook.com/tiapharikopimy/?locale=ms_MY" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="45">
+                </a>
+                <a href="https://www.instagram.com/TiapHariKopi" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="45">
+                </a>
+                <a href="https://www.tiktok.com/@TiapHariKopi" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="45">
+                </a>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        # Statistik Followers (Updated to print dynamic live values seamlessly)
+        st.markdown(f"""
+            <div style="font-size: 16px; font-family: sans-serif; color: #E0E0E0; display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="24">
+                    <span><b>Facebook : {live_counts['facebook']} Followers</b></span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="24">
+                    <span><b>Instagram : {live_counts['instagram']} Followers</b></span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="24">
+                    <span><b>TikTok : {live_counts['tiktok']} Followers</b></span>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # =====================================
+    # BAHAGIAN BAWAH (Opening Hours & Copyright)
+    # =====================================
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
+    # Opening Hours (Sama tulisan sebiji seperti dalam gambar)
+    st.markdown("""
+        <div style="margin-top: 10px; margin-bottom: 20px;">
+            <h2 style="color: #F3E5D8; font-size: 28px; display: flex; align-items: center; gap: 10px;">
+                🕒 Opening Hours
+            </h2>
+            <ul style="color: #E0E0E0; font-size: 16px; list-style-type: disc; padding-left: 20px; line-height: 1.8;">
+                <li>Open Daily : 3PM - 11PM</li>
+                <li>Kitchen Last Order : 10PM</li>
+                <li>Closed on Wednesday</li>
+            </ul>
+        </div>
+    """, unsafe_allow_html=True)
+
+
 elif selected_route == "LOG IN":
     st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center;'>🔒 Internal Portal & Analytics</h2>", unsafe_allow_html=True)
     
@@ -1670,163 +1442,14 @@ elif selected_route == "LOG IN":
         st.text_input("Access Password", type="password", placeholder="••••••••")
         st.button("Authenticate & Log In")
 
-# ==================================================
-# HELPER FUNCTIONS TO FETCH LIVE FOLLOWER COUNTS
-# ==================================================
-@st.cache_data(ttl=10800) # Cache counts for 3 hours to avoid getting blocked/banned
-def get_live_followers():
-    # Default fallbacks (your current values)
-    counts = {
-        "facebook": "3.3K",
-        "instagram": "3,331",
-        "tiktok": "766"
-    }
-    
-    # 1. ATTEMPT INSTAGRAM EXTRACTION (via JSON trick)
-    try:
-        ig_url = "https://www.instagram.com/tiapharikopi/?__a=1&__d=dis"
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-        response = requests.get(ig_url, headers=headers, timeout=5)
-        if response.status_code == 200:
-            data = response.json()
-            count = data['graphql']['user']['edge_followed_by']['count']
-            counts["instagram"] = f"{count:,}"
-    except:
-        pass # Fallback quietly if blocked
-        
-    # 2. ATTEMPT TIKTOK EXTRACTION (via OEmbed/HTML regex)
-    try:
-        tt_url = "https://www.tiktok.com/@tiapharikopi"
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-        res = requests.get(tt_url, headers=headers, timeout=5)
-        match = re.search(r'"followerCount":(\d+)', res.text)
-        if match:
-            count = int(match.group(1))
-            counts["tiktok"] = f"{count:,}" if count < 1000 else f"{count/1000:.1f}K"
-    except:
-        pass
-
-    return counts
-
-# Fetch the active counts dynamically
-live_counts = get_live_followers()
-
-# ==================================================
-# FOOTER SECTION (Tiap Hari Kopi Style)
-# ==================================================
-
-# Jarak atas dan garisan pemisah
-st.markdown("<br><br>", unsafe_allow_html=True)
-st.markdown("---")
-
-
-# Menggunakan 2 kolum utama untuk susun atur kiri & kanan
-col1, col2 = st.columns([1.1, 0.9], gap="large")
-
-# =====================================
-# SEKSYEN KIRI (Header, About Us, Visit Hub, Call)
-# =====================================
-with col1:
-    # Nama Kedai & Ikon Kopi
-    st.markdown("""
-        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: -10px;">
-            <h1 style="color: #E0F7FA; font-family: 'Arial Black', sans-serif; font-size: 42px; font-weight: 900; letter-spacing: 1px; margin: 0;">TIAP HARI KOPI</h1>
-            <span style="font-size: 38px;">☕</span>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # About Us
-    st.markdown("""
-        <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 25px; margin-bottom: 10px;">About Us</h2>
-        <p style="color: #E0E0E0; font-size: 15px; margin-bottom: 5px;">Every single cup carries raw passion, home comfort, and a little bit of daily happiness.</p>
-        <p style="font-size: 16px; margin-top: 0;">🤎</p>
-    """, unsafe_allow_html=True)
-    
-    # Visit Our Hub
-    st.markdown("""
-        <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 25px; margin-bottom: 10px;">📍 Visit Our Hub</h2>
-        <p style="color: #E0E0E0; font-size: 15px; line-height: 1.6;">
-        Lot 2046, Kampung Gok Bata, Jalan Raja Perempuan Zainab II, <br>16150 Kota Bharu, Kelantan.
-        </p>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    # Call Us
-    st.markdown("""
-        <h2 style="color: #F3E5D8; font-size: 26px; margin-top: 10px; margin-bottom: 15px;">📞 Call Us</h2>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <a href="tel:+60134944337" style="text-decoration: none;">
-                <img src="https://cdn-icons-png.flaticon.com/512/3616/3616215.png" width="48" style="border-radius: 50%;">
-            </a>
-            <a href="tel:+60134944337" style="font-size: 28px; text-decoration: none; color: #E5A967; font-weight: bold; font-family: sans-serif;">
-                013-4944337
-            </a>
-            <a href="https://wa.me/60134944337" target="_blank" style="text-decoration: none;">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="48">
-            </a>
-        </div>
-    """, unsafe_allow_html=True)
-
-# =====================================
-# SEKSYEN KANAN (Connect With Us & Followers)
-# =====================================
-with col2:
-    # Connect With Us Title
-    st.markdown("""
-        <h2 style="color: #F3E5D8; font-size: 26px; margin-bottom: 15px;">🔗 Connect With Us</h2>
-    """, unsafe_allow_html=True)
-    
-    # Grid Ikon Media Sosial Atas
-    st.markdown("""
-        <div style="display: flex; gap: 15px; margin-bottom: 25px;">
-            <a href="https://www.facebook.com/tiapharikopimy/?locale=ms_MY" target="_blank">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="45">
-            </a>
-            <a href="https://www.instagram.com/TiapHariKopi" target="_blank">
-                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="45">
-            </a>
-            <a href="https://www.tiktok.com/@TiapHariKopi" target="_blank">
-                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="45">
-            </a>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Statistik Followers (Updated to print dynamic live values seamlessly)
-    st.markdown(f"""
-        <div style="font-size: 16px; font-family: sans-serif; color: #E0E0E0; display: flex; flex-direction: column; gap: 15px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="24">
-                <span><b>Facebook : {live_counts['facebook']} Followers</b></span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="24">
-                <span><b>Instagram : {live_counts['instagram']} Followers</b></span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="24">
-                <span><b>TikTok : {live_counts['tiktok']} Followers</b></span>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-# =====================================
-# BAHAGIAN BAWAH (Opening Hours & Copyright)
-# =====================================
-st.markdown("<br><br>", unsafe_allow_html=True)
-
-# Opening Hours (Sama tulisan sebiji seperti dalam gambar)
+# 3. INTERACTIVE PURE HTML/CSS FLOATING "GO TO TOP" BUTTON (NOW ACCESSIBLE EVERYWHERE)
 st.markdown("""
-    <div style="margin-top: 10px; margin-bottom: 20px;">
-        <h2 style="color: #F3E5D8; font-size: 28px; display: flex; align-items: center; gap: 10px;">
-            🕒 Opening Hours
-        </h2>
-        <ul style="color: #E0E0E0; font-size: 16px; list-style-type: disc; padding-left: 20px; line-height: 1.8;">
-            <li>Open Daily : 3PM - 11PM</li>
-            <li>Kitchen Last Order : 10PM</li>
-            <li>Closed on Wednesday</li>
-        </ul>
-    </div>
+<div class="scroll-wrapper-global">
+    <a href="#top-anchor" target="_parent" class="scroll-top-link">
+        <span class="arrow-icon">▲</span>
+        <span class="btn-text">GO TO TOP</span>
+    </a>
+</div>
 """, unsafe_allow_html=True)
 
 # Garisan pemisah halus sebelum hak cipta
