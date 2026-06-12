@@ -1445,10 +1445,10 @@ elif selected_route == "LOG IN":
 # 3. INTERACTIVE PURE HTML/CSS FLOATING "GO TO TOP" BUTTON (NOW ACCESSIBLE EVERYWHERE)
 st.markdown("""
 <div class="scroll-wrapper-global">
-    <a href="#top-anchor" target="_parent" class="scroll-top-link">
+    <button onclick="window.parent.document.querySelector('.main').scrollTo({top: 0, behavior: 'smooth'});" class="scroll-top-link">
         <span class="arrow-icon">▲</span>
         <span class="btn-text">GO TO TOP</span>
-    </a>
+    </button>
 </div>
 """, unsafe_allow_html=True)
 
