@@ -723,7 +723,7 @@ elif selected_route == "MENU":
                 </div>
             </div>
             """, unsafe_allow_html=True)
-            
+
 elif selected_route == "RESERVATIONS":
     st.markdown("<h3 style='color:#ffffff; font-weight:700; margin-bottom:20px;'>Secure Orders & Bookings</h3>", unsafe_allow_html=True)
     b_col1, b_col2 = st.columns(2, gap="large")
@@ -743,6 +743,27 @@ elif selected_route == "RESERVATIONS":
         </div>
         """, unsafe_allow_html=True)
         st.link_button("Find Us On GrabFood", "https://r.grab.com/")
+
+    # --------------------------------------------------
+    # FIXED GOOGLE MAP COMPONENT RIGHT HERE 
+    # --------------------------------------------------
+    st.markdown("<h3 style='color:#ffffff; font-weight:700; margin-top:25px; margin-bottom:1.5px;'>Or come find us here!</h3>", unsafe_allow_html=True)
+    
+    # Updated embed block targeted exactly to Tiap Hari Kopi's specific CID / place token
+    map_iframe_html = """
+    <div style="width: 100%; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border: 1px solid #1a2636;">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15869.569474771694!2d102.2779677!3d6.0939054!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6b11d04d558df%3A0xa8946be7fee39ef5!2sTiap%20Hari%20Kopi!5e0!3m2!1sen!2smy!4v1718220000000!5m2!1sen!2smy" 
+            width="100%" 
+            height="480" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+    """
+    st.components.v1.html(map_iframe_html, height=500)
 
 elif selected_route == "FEEDBACK":
     st.markdown("<h2 style='color: white; margin-bottom: 20px; text-align:center;'>Customer Feedback Hub</h2>", unsafe_allow_html=True)
@@ -1811,6 +1832,6 @@ st.markdown("""
     <div style="text-align: center; font-size: 14px; padding-top: 15px; padding-bottom: 20px; color: rgba(255,255,255,0.5); line-height: 1.6; font-family: sans-serif;">
         © 2026 Tiap Hari Kopi Enterprise.<br>
         All Rights Reserved.<br><br>
-        Inspired by Nasken Modern Template ☕
+        Inspired by Nasken Website Template
     </div>
 """, unsafe_allow_html=True)
