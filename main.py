@@ -19,6 +19,7 @@ st.markdown("""
 html, body, [data-testid="stAppViewContainer"] {
     font-family: 'Montserrat', sans-serif;
     background-color: #0b131f !important;
+    scroll-behavior: smooth !important; /* Smooth scroll behavior on global frame targets */
 }
 
 .block-container {
@@ -464,6 +465,53 @@ div.stButton > button:hover {
     display: block;
     object-fit: cover;
 }
+
+/* NATIVE COMPLIANT IMMUTABLE FIXED BOTTOM-RIGHT GO TO TOP FLOATER */
+.scroll-wrapper-global {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 99999;
+}
+.scroll-top-link {
+    text-decoration: none !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+}
+.scroll-top-link .arrow-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background-color: #004481; /* Branded Logo Blue */
+    color: white !important;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.scroll-top-link .btn-text {
+    font-family: 'Montserrat', sans-serif;
+    color: #92a4b8;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+}
+.scroll-top-link:hover .arrow-icon {
+    background-color: #003361;
+    transform: scale(1.1);
+}
+.scroll-top-link:hover .btn-text {
+    color: #ffffff;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -488,11 +536,18 @@ if "customer_metrics" not in st.session_state:
 
 # --- TRACK ACTIVE NAVIGATION ROUTE ---
 current_params = st.query_params
+# Default to "HOME" cleanly if no page URL argument parameter exists yet
 selected_route = current_params.get("page", "HOME")
+if isinstance(selected_route, list):
+    selected_route = selected_route[0] if len(selected_route) > 0 else "HOME"
 
 # Helper to easily inject the active line style class directly onto the active link element
 def get_active_class(route_name):
     return "nk-nav-link active" if selected_route == route_name else "nk-nav-link"
+
+# --- TOP GLOBAL TARGET ANCHOR LINK ---
+# Absolute positioning forces the scrolling mechanism to target the true absolute top corner of the frame window layout.
+st.markdown('<div id="top-anchor" style="position: absolute; top: 0; left: 0;"></div>', unsafe_allow_html=True)
 
 # --- BRAND NAVIGATION HEADER ---
 st.markdown(f"""
@@ -514,10 +569,6 @@ st.markdown(f"""
 # ==================================================
 
 if selected_route == "HOME":
-    # 0. INJECT SCRIPTS & ANCHOR FOR SCRIPTED SCROLL-TO-TOP TARGET
-    # This creates an empty invisible target anchor at the top of the body execution line
-    st.markdown('<div id="top-anchor"></div>', unsafe_allow_html=True)
-
     st.markdown('<div class="nk-hero-title">Local Coffee, Premium Vibes.</div>', unsafe_allow_html=True)
     st.markdown('<div class="nk-hero-subtitle">Every Single Day Perfection</div>', unsafe_allow_html=True)
 
@@ -574,107 +625,14 @@ if selected_route == "HOME":
     st.markdown("<hr style='border-color: #1a2636; margin: 50px 0;'>", unsafe_allow_html=True)
 
     # 3. INTERACTIVE FIXED BOTTOM-RIGHT "GO TO TOP" COMPONENT
-    # Native CSS + Safe Global Window Canvas Scroller avoiding cross-origin errors.
+    # Fixed non-iframe native anchor execution targeting the outer body wrapper
     st.markdown("""
     <div class="scroll-wrapper-global">
-        <button id="scrollToTopBtnGlobal" title="Go to top">
+        <a href="#top-anchor" class="scroll-top-link" target="_self">
             <span class="arrow-icon">▲</span>
             <span class="btn-text">GO TO TOP</span>
-        </button>
+        </a>
     </div>
-
-    <style>
-        /* Forces fixed bottom-right position across layout canvas zones */
-        .scroll-wrapper-global {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            z-index: 999999;
-        }
-        
-        /* Flex block stacking elements vertically */
-        #scrollToTopBtnGlobal {
-            display: none; /* Managed by JavaScript scroll threshold below */
-            background: none;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 0;
-            margin: 0;
-        }
-        
-        /* Upper Circle Frame containing arrow character direction */
-        #scrollToTopBtnGlobal .arrow-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            background-color: #004481; /* Branded Logo Blue */
-            color: white !important;
-            border-radius: 50%;
-            font-size: 16px;
-            font-weight: bold;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.2s ease, transform 0.2s ease;
-        }
-        
-        /* Bottom explicit text layout text */
-        #scrollToTopBtnGlobal .btn-text {
-            font-family: 'Montserrat', sans-serif;
-            color: #92a4b8;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            transition: color 0.2s ease;
-        }
-        
-        /* Interactive hovering transforms */
-        #scrollToTopBtnGlobal:hover .arrow-icon {
-            background-color: #003361;
-            transform: scale(1.1);
-        }
-        
-        #scrollToTopBtnGlobal:hover .btn-text {
-            color: #ffffff;
-        }
-    </style>
-
-    <script>
-        (function() {
-            // Gains target control over root execution node inside Streamlit's structural engine
-            const mainCanvas = window.parent.document.querySelector('[data-testid="stAppViewContainer"]');
-            const scrollActionBtn = window.parent.document.getElementById("scrollToTopBtnGlobal");
-
-            if (mainCanvas && scrollActionBtn) {
-                // Clear old listener iterations on application redraws
-                mainCanvas.onscroll = null;
-                
-                // Show button only after scrolling past 300px threshold height
-                mainCanvas.onscroll = function() {
-                    if (mainCanvas.scrollTop > 300) {
-                        scrollActionBtn.style.setProperty('display', 'flex', 'important');
-                    } else {
-                        scrollActionBtn.style.setProperty('display', 'none', 'important');
-                    }
-                };
-
-                // Triggers a complete top reset, scrolling completely to 0 coordinate plane
-                scrollActionBtn.onclick = function() {
-                    mainCanvas.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                };
-            }
-        })();
-    </script>
     """, unsafe_allow_html=True)
     
     # --------------------------------------------------
@@ -731,6 +689,63 @@ if selected_route == "HOME":
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # --------------------------------------------------
+    # NEW PROMOTIONS AND ANNOUNCEMENT SECTION (STARBUCKS DESIGN)
+    # --------------------------------------------------
+    st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center; margin-bottom: 35px;'>Promotions & Announcement</h2>", unsafe_allow_html=True)
+    
+    promo_b64_left = get_b64_image("images/waktuoperasi.jpg")
+    promo_b64_right = get_b64_image("images/feedbackpic.jpg")
+    
+    promo_col1, promo_col2 = st.columns(2, gap="large")
+    
+    with promo_col1:
+        st.markdown(f"""
+        <div class="sb-promo-container" style="background-color: #d4e9e2;">
+            <div class="sb-promo-img-side" style="background-image: url('{promo_b64_left}');"></div>
+            <div class="sb-promo-text-side">
+                <div class="sb-promo-title">Reserve your seat now!</div>
+                <div class="sb-promo-desc">Share your favorites with someone special this coffee season.</div>
+                <a class="sb-promo-btn" style="color: #1e3932; border-color: #1e3932;" href="?page=RESERVATIONS" target="_self"> &nbsp;&nbsp;Reserve a Seat</a>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with promo_col2:
+        st.markdown(f"""
+        <div class="sb-promo-container" style="background-color: #f9f9fa; background: #f2d1ca;">
+            <div class="sb-promo-text-side">
+                <div class="sb-promo-title">Leave us a review</div>
+                <div class="sb-promo-desc">Share your experience with us and help us improve.</div>
+                <a class="sb-promo-btn" style="color: #1e3932; border-color: #1e3932;" href="?page=FEEDBACK" target="_self"> &nbsp;&nbsp;Leave Feedback</a>
+            </div>
+            <div class="sb-promo-img-side" style="background-image: url('{promo_b64_right}');"></div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # ASYMMETRIC IMAGE GRID IN PROMOS SECTION
+    grid_img_main = get_b64_image("images/promo1.jpg")
+    grid_img_sub1 = get_b64_image("images/promo6.jpg")
+    grid_img_sub2 = get_b64_image("images/promo3.jpg")
+    grid_img_sub3 = get_b64_image("images/promo2.jpg")
+    grid_img_sub4 = get_b64_image("images/promo5.jpg")
+
+    st.markdown(f"""
+    <div class="sb-grid-layout">
+        <div class="sb-grid-left-featured">
+            <img src="{grid_img_main}" alt="Monthly Promotions">
+        </div>
+        <div class="sb-grid-right-stack">
+            <div class="sb-grid-item"><img src="{grid_img_sub1}"></div>
+            <div class="sb-grid-item"><img src="{grid_img_sub2}"></div>
+            <div class="sb-grid-item"><img src="{grid_img_sub3}"></div>
+            <div class="sb-grid-item"><img src="{grid_img_sub4}"></div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# (Other selected routes remain functional and clean)
 
 elif selected_route == "MENU":
     # --------------------------------------------------
