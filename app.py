@@ -76,11 +76,11 @@ if not os.path.exists(USER_DB):
 
 def get_real_reviews():
     if not os.path.exists(DB_FILE):
-        return pd.DataFrame(columns=["Date", "Platform", "Customer Type", "Review", "Sentiment"])
+        return pd.DataFrame(columns=["Date", "Platform", "Review", "Customer Type", "Sentiment"])
     
     df = pd.read_csv(DB_FILE)
     
-    # Pastikan kolum sentiasa wujud untuk mengelakkan ralat
+    # Check and add missing columns safely
     if 'Customer Type' not in df.columns:
         df['Customer Type'] = 'Unknown'
     if 'Sentiment' not in df.columns:
@@ -93,8 +93,13 @@ def get_real_reviews():
             except:
                 return 'Neutral'
         df['Sentiment'] = df['Review'].apply(analyze_sentiment)
-        df.to_csv(DB_FILE, index=False) # Update database
-    return df
+        df.to_csv(DB_FILE, index=False)
+        
+    # Explicitly enforce clean column display sequence
+    ordered_columns = ["Date", "Platform", "Review", "Customer Type", "Sentiment"]
+    existing_ordered = [col for col in ordered_columns if col in df.columns]
+    
+    return df[existing_ordered]
 
 def get_users():
     return pd.read_csv(USER_DB)
@@ -113,10 +118,12 @@ def sync_google_reviews():
         reviews = data.get("result", {}).get("reviews", [])
         if not reviews: return 0
             
-        df = get_real_reviews()
-        existing_texts = df['Review'].tolist() if 'Review' in df.columns else []
+        df_existing = get_real_reviews()
+        existing_texts = df_existing['Review'].tolist() if 'Review' in df_existing.columns else []
         
         added = 0
+        new_rows_list = []
+        
         for r in reviews:
             text = r.get("text", "")
             time_val = r.get("time", 0)
@@ -127,18 +134,21 @@ def sync_google_reviews():
                 polarity = TextBlob(text).sentiment.polarity
                 sentiment = 'Positive' if polarity > 0.05 else 'Negative' if polarity < -0.05 else 'Neutral'
                 
-                new_row = pd.DataFrame({
-                    "Date": [date_format],
-                    "Platform": ["Google Maps"],
-                    "Customer Type": ["Google User"],
-                    "Review": [text],
-                    "Sentiment": [sentiment]
+                new_rows_list.append({
+                    "Date": date_format,
+                    "Platform": "Google Maps",
+                    "Review": text,
+                    "Customer Type": "Google User",
+                    "Sentiment": sentiment
                 })
-                if os.path.exists(DB_FILE):
-                    new_row.to_csv(DB_FILE, mode='a', header=False, index=False)
-                else:
-                    new_row.to_csv(DB_FILE, index=False)
                 added += 1
+        
+        # Safe structural concatenation by name instead of raw append
+        if new_rows_list:
+            df_new = pd.DataFrame(new_rows_list)
+            df_final_combined = pd.concat([df_existing, df_new], ignore_index=True)
+            df_final_combined.to_csv(DB_FILE, index=False)
+            
         return added
     except Exception as e:
         return "error"
