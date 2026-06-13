@@ -1875,3 +1875,22 @@ st.markdown("""
         Inspired by Nasken Website Template
     </div>
 """, unsafe_allow_html=True)
+
+# ==================================================
+# BAHAGIAN INTEGRASI SISTEM BACKEND (ADMIN LOG IN)
+# ==================================================
+elif selected_route == "LOG IN":
+    # 1. Import fail app.py (backend) anda
+    import app as backend
+    
+    # 2. Tetapkan status log masuk
+    if "logged_in" not in st.session_state:
+        st.session_state["logged_in"] = False
+        
+    # 3. Paparkan halaman yang betul (Berdasarkan fail app.py anda)
+    if not st.session_state["logged_in"]:
+        # Paparkan Form Log Masuk dari fail app.py
+        backend.auth_page() 
+    else:
+        # Jika berjaya login, paparkan terus Dashboard Analytics anda
+        backend.admin_workspace()
