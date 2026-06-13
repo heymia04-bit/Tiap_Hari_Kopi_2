@@ -1114,20 +1114,62 @@ elif selected_route == "FEEDBACK":
         # Close the scrolling viewport container wrapper safely
         st.markdown('</div>', unsafe_allow_html=True)
 
-    with col_right:
-        st.markdown('<h3 style="color: white; margin-bottom: 20px;">Share your feedback</h3>', unsafe_allow_html=True)
-        cust_name = st.text_input("Customer Name", placeholder="Enter name")
-        cust_type = st.radio("✨ Is this your first time visiting Tiap Hari Kopi?", options=["First-Time Customer", "Repeat Customer"], horizontal=True)
-        st.write("⭐ Rate your experience:")
-        cust_stars = st.feedback("stars", key="feedback_stars")
-        cust_text = st.text_area("Your Review", placeholder="Write something...", height=120)
+    st.markdown("<h2 style='color: white;'>💬 Share Your Feedback</h2>", unsafe_allow_html=True)
+    st.write("We would love to hear your thoughts about our coffee and service!")
+    
+    with st.form(key='feedback_form', clear_on_submit=True):
+        name = st.text_input("Name")
+        email = st.text_input("Email")
         
-        if st.button("Post Live Feedback"):
-            if cust_name and cust_text:
-                st.session_state.total_reviews += 1
-                st.success("✨ Thank you for your feedback! It helps us grow.")
+        # Penambahan Input Radio bagi Jenis Pelanggan
+        customer_type = st.radio(
+            "Customer Type",
+            options=["First-time Customer", "Repeat Customer"],
+            horizontal=True
+        )
+        
+        rating = st.slider("Rating", 1, 5, 5)
+        comments = st.text_area("Your Feedback")
+        
+        submit_button = st.form_submit_button(label="Submit Feedback")
+        
+        if submit_button:
+            if name and comments:
+                # Proses Analisis Sentiment (Positive/Negative/Neutral)
+                from textblob import TextBlob
+                polarity = TextBlob(str(comments)).sentiment.polarity
+                if polarity > 0.05: 
+                    sentiment = 'Positive'
+                elif polarity < -0.05: 
+                    sentiment = 'Negative'
+                else: 
+                    sentiment = 'Neutral'
+                
+                # Format Masa Semasa
+                from datetime import datetime, timedelta
+                my_time = datetime.utcnow() + timedelta(hours=8)
+                date_str = my_time.strftime("%Y-%m-%d %H:%M:%S")
+                
+                # Simpan Data ke dalam CSV (Sama dengan database app.py)
+                import os
+                db_file = 'reviews_database.csv'
+                
+                new_row = pd.DataFrame({
+                    "Date": [date_str],
+                    "Platform": ["Web Portal"],
+                    "Customer Type": [customer_type],
+                    "Review": [comments],
+                    "Sentiment": [sentiment]
+                })
+                
+                if os.path.exists(db_file):
+                    new_row.to_csv(db_file, mode='a', header=False, index=False)
+                else:
+                    new_row.to_csv(db_file, index=False)
+                
+                st.success(f"Thank you {name}! Your feedback as a '{customer_type}' has been saved to our database.")
             else:
-                st.error("Please fill in both your name and review text before submitting.")
+                st.error("Please fill in your Name and Feedback comments.")
 
 elif selected_route == "ABOUT US":
     st.markdown("<h2 style='color:#ffffff; font-weight:700; margin-bottom:5px;'>About Us</h2>", unsafe_allow_html=True)
