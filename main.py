@@ -10,7 +10,12 @@ import re
 # --------------------------------------------------
 # 1. SET PAGE CONFIG & TIAP HARI KOPI THEME CSS
 # --------------------------------------------------
-# st.set_page_config(page_title="Tiap Hari Kopi", layout="wide")
+st.set_page_config(page_title="Tiap Hari Kopi", layout="wide")
+
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+if 'menu_index' not in st.session_state:
+    st.session_state['menu_index'] = 0
 
 st.markdown("""
 <style>
@@ -766,19 +771,12 @@ elif selected_route == "RESERVATIONS":
 # BAHAGIAN INTEGRASI SISTEM BACKEND (ADMIN LOG IN)
 # ==================================================
 elif selected_route == "LOG IN":
-    # 1. Import fail app.py (backend) anda
     import app as backend
     
-    # 2. Tetapkan status log masuk
-    if "logged_in" not in st.session_state:
-        st.session_state["logged_in"] = False
-        
-    # 3. Paparkan halaman yang betul (Berdasarkan fail app.py anda)
-    if not st.session_state["logged_in"]:
-        # Paparkan Form Log Masuk dari fail app.py
-        backend.auth_page() 
+    # Semak status: Jika belum log masuk, tunjuk form. Jika sudah, tunjuk dashboard.
+    if not st.session_state.get('logged_in', False):
+        backend.auth_page()
     else:
-        # Jika berjaya login, paparkan terus Dashboard Analytics anda
         backend.admin_workspace()
         
 # --------------------------------------------------
