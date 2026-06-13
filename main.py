@@ -10,7 +10,7 @@ import re
 # --------------------------------------------------
 # 1. SET PAGE CONFIG & TIAP HARI KOPI THEME CSS
 # --------------------------------------------------
-st.set_page_config(page_title="Tiap Hari Kopi", layout="wide")
+# st.set_page_config(page_title="Tiap Hari Kopi", layout="wide")
 
 st.markdown("""
 <style>
