@@ -1813,18 +1813,6 @@ elif selected_route == "ABOUT US":
         </div>
     """, unsafe_allow_html=True)
 
-elif selected_route == "LOG IN":
-    import app as backend  # Mengimport fail app.py anda sebagai backend
-    
-    # Memandangkan app.py memerlukan CSS khasnya, kita inject CSS tersebut di sini
-    backend.inject_custom_css()
-    
-    # Logik Semakan Status Log Masuk
-    if not st.session_state['logged_in']:
-        backend.auth_page()  # Panggil fungsi login page dari app.py
-    else:
-        backend.admin_workspace()  # Panggil fungsi dashboard dari app.py
-
 # 3. INTERACTIVE NATIVE HTML/CSS FLOATING "GO TO TOP" BUTTON (ACCESSIBLE EVERYWHERE)
 st.markdown("""
 <div class="scroll-wrapper-global">
