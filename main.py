@@ -1814,6 +1814,20 @@ elif selected_route == "ABOUT US":
     """, unsafe_allow_html=True)
 
 elif selected_route == "LOG IN":
+
+    import app as backend
+    import importlib
+    importlib.reload(backend)
+    
+    # Suntik reka bentuk visual tersuai milik app.py
+    backend.inject_custom_css()
+    
+    # Semakan status: Jika belum login paparkan borang, jika sudah paparkan workspace dashboard
+    if not st.session_state.get('logged_in', False):
+        backend.auth_page()
+    else:
+        backend.admin_workspace()
+        
     st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center;'>🔒 Internal Portal & Analytics</h2>", unsafe_allow_html=True)
     
     tab_metrics, tab_login = st.tabs(["📊 Business Analytics Dashboard", "🔑 Staff Login Portal"])
