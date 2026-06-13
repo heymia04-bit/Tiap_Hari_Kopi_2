@@ -762,6 +762,25 @@ elif selected_route == "RESERVATIONS":
         """, unsafe_allow_html=True)
         st.link_button("Find Us On GrabFood", "https://r.grab.com/g/6-20260612_211256_9ef30256bb924d40bac7573c90142773_MEXMPS-1-C3NTVKDZLZCHTJ")
 
+# ==================================================
+# BAHAGIAN INTEGRASI SISTEM BACKEND (ADMIN LOG IN)
+# ==================================================
+elif selected_route == "LOG IN":
+    # 1. Import fail app.py (backend) anda
+    import app as backend
+    
+    # 2. Tetapkan status log masuk
+    if "logged_in" not in st.session_state:
+        st.session_state["logged_in"] = False
+        
+    # 3. Paparkan halaman yang betul (Berdasarkan fail app.py anda)
+    if not st.session_state["logged_in"]:
+        # Paparkan Form Log Masuk dari fail app.py
+        backend.auth_page() 
+    else:
+        # Jika berjaya login, paparkan terus Dashboard Analytics anda
+        backend.admin_workspace()
+        
 # --------------------------------------------------
     # FIXED GOOGLE MAP COMPONENT RIGHT HERE 
     # --------------------------------------------------
@@ -1876,21 +1895,3 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# ==================================================
-# BAHAGIAN INTEGRASI SISTEM BACKEND (ADMIN LOG IN)
-# ==================================================
-elif selected_route == "LOG IN":
-    # 1. Import fail app.py (backend) anda
-    import app as backend
-    
-    # 2. Tetapkan status log masuk
-    if "logged_in" not in st.session_state:
-        st.session_state["logged_in"] = False
-        
-    # 3. Paparkan halaman yang betul (Berdasarkan fail app.py anda)
-    if not st.session_state["logged_in"]:
-        # Paparkan Form Log Masuk dari fail app.py
-        backend.auth_page() 
-    else:
-        # Jika berjaya login, paparkan terus Dashboard Analytics anda
-        backend.admin_workspace()
