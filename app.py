@@ -10,51 +10,23 @@ import requests # LIBRARY BARU UNTUK GOOGLE API
 from streamlit_option_menu import option_menu
 
 # ==========================================
-# 1. PAGE CONFIGURATION
+# 1. PAGE CONFIGURATION (DITUTUP UNTUK INTEGRASI)
 # ==========================================
 # st.set_page_config(page_title="Tiap Hari Kopi System", layout="wide", page_icon="☕")
 
-def auth_page():
-    st.title("Log Masuk Pihak Pengurusan")
-    
-    # --- TAMPAL KOD FORM LOG IN ANDA DI SINI ---
-    # Contohnya yang ada st.text_input untuk username & password
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    
-    if st.button("Log In", key="login_btn"):
-        if username == "admin" and password == "kopi123": # Tukar ikut logik anda
-            st.session_state["logged_in"] = True
-            st.success("Berjaya!")
-            st.rerun()
-        else:
-            st.error("Kredential salah")
-
-
-# ====================================================================
-# LANGKAH 2: Bungkus bahagian DASHBOARD/GRAF anda ke dalam admin_workspace()
-# ====================================================================
-def admin_workspace():
-    st.title("Papan Pemuka Analitik (Admin)")
-    
-    # --- TAMPAL SEMUA KOD GRAF, MAP, & DATA API ANDA DI SINI ---
-    # Semua kod yang memaparkan data Google, Meta, dan graf-graf anda
-    # diletakkan di dalam blok fungsi ini (pastikan ada jarak/indentation ke dalam).
-    
-    st.write("Selamat datang ke ruangan dashboard.")
-    
 # ==========================================
 # 2. CUSTOM CSS & STYLING
 # ==========================================
 def inject_custom_css():
     st.markdown("""
         <style>
+            /* Mengubah warna font teks Streamlit biasa kepada putih supaya serasi dengan tema kawan anda */
             .stApp {
                 background-color: #0b131f;
                 color: #ffffff;
                 animation: fadeIn 1.2s ease-in-out;
             }
-            h1, h2, h3, h4, h5, h6, p, span, div, label {
+            .stTabs [data-baseweb="tab"] {
                 color: #ffffff !important;
             }
             .stButton>button {
@@ -124,7 +96,7 @@ def inject_custom_css():
 DB_FILE = 'reviews_database.csv'
 USER_DB = 'users_database.csv'
 
-# [PERHATIAN]: MASUKKAN API KEY ANDA DI SINI
+# API KEY GOOGLE MAPS ANDA
 GOOGLE_API_KEY = "AIzaSyDQ_pYGFaa109Lq2l_g6YMF0mjKXU1ny4M"
 PLACE_ID = "ChIJ31jVBB2xtjER9Z7j_udrlKg"
 
@@ -192,7 +164,6 @@ def sync_google_reviews():
             date_str = datetime.utcfromtimestamp(time_val) + timedelta(hours=8)
             date_format = date_str.strftime("%Y-%m-%d %H:%M:%S")
             
-            # Elak ulasan yang sama (Duplicate) masuk 2 kali
             if text and text not in existing_texts:
                 new_row = pd.DataFrame({
                     "Date": [date_format],
@@ -213,17 +184,13 @@ def generate_sales_data():
     })
 
 def fetch_social_media_apis():
-    # Gunakan 'seed' berdasarkan masa (jam) supaya data tidak melompat secara rawak
-    # Ia akan nampak konsisten untuk jam tersebut, dan naik sedikit pada jam seterusnya.
     current_hour = datetime.now().hour
     current_day = datetime.now().day
     
-    # Formula simulasi peningkatan berterusan (Real-growth simulator)
     ig_base = 12450 + (current_day * 15) + current_hour
     fb_base = 8920 + (current_day * 8) + (current_hour // 2)
     
-    # Elemen interaktif yang berubah secara logik (Mentions & Inquiries)
-    random.seed(datetime.now().minute) # Berubah setiap minit
+    random.seed(datetime.now().minute)
     
     return {
         "ig_followers": ig_base,
@@ -238,11 +205,12 @@ def fetch_social_media_apis():
 # 4. FULL AUTHENTICATION SYSTEM
 # ==========================================
 def auth_page():
+    inject_custom_css() # Jalankan CSS tema gelap anda di sini
     st.markdown("<br><br>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 1.2, 1])
     
     with col2:
-        st.markdown("<h2 style='text-align: center;'>☕ Tiap Hari Kopi</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center; color: white;'>☕ Tiap Hari Kopi</h2>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center; color: #888;'>Digital Branding & Engagement Platform</p>", unsafe_allow_html=True)
         
         tab1, tab2, tab3 = st.tabs(["🔒 Log In", "📝 Sign Up", "🔑 Forgot Password"])
@@ -307,9 +275,14 @@ def auth_page():
                             st.error("Account not found in our database.")
 
 # ==========================================
-# 5. ADMIN BACKEND & SYNCED NAVIGATION
+# 5. ADMIN WORKSPACE (DASHBOARD ANALYTICS)
 # ==========================================
 def admin_workspace():
+    inject_custom_css() # Jalankan CSS tema gelap anda di sini
+    
+    if 'menu_index' not in st.session_state:
+        st.session_state['menu_index'] = 0
+
     h1, h2 = st.columns([9, 1])
     with h1:
         st.markdown("<h3 style='color: #ffffff;'>☕ TIAP HARI KOPI | Workspace</h3>", unsafe_allow_html=True)
@@ -369,7 +342,6 @@ def admin_workspace():
                 st.info(f"{sentiment_emoji} \"{row['Review']}\" \n\n *- {row['Platform']} ({row['Date']})*")
 
     elif selected_top == "Analytics":
-        # BAHAGIAN BARU: BUTANG SYNC GOOGLE REVIEWS
         col_title, col_btn = st.columns([3, 1])
         with col_title:
             st.subheader("Brand Sentiment Analysis (Live NLP)")
@@ -378,15 +350,15 @@ def admin_workspace():
                 with st.spinner("Fetching data from Google Maps..."):
                     status = sync_google_reviews()
                     if status == "api_missing":
-                        st.error("Please insert your API Key in the code (Line 112).")
+                        st.error("Please insert your API Key.")
                     elif status == "api_error":
-                        st.error("Invalid API Key or Places API is not enabled in Google Console.")
+                        st.error("Invalid API Key or Places API is not enabled.")
                     elif status == "error":
                         st.error("Failed to connect to Google Servers.")
-                    elif status == 0:
-                        st.info("Database is up to date! No new reviews found on Google.")
+                    elif status == "0" or status == 0:
+                        st.info("Database is up to date! No new reviews found.")
                     else:
-                        st.success(f"Successfully downloaded {status} new review(s) from Google Maps!")
+                        st.success(f"Successfully downloaded {status} new review(s)!")
                         time.sleep(1.5)
                         st.rerun()
         
@@ -464,7 +436,7 @@ def admin_workspace():
             if submit_change:
                 if new_pass == confirm_pass and len(new_pass) > 0:
                     update_password(current_user, new_pass)
-                    st.success("Password successfully updated! Database has been synchronized.")
+                    st.success("Password successfully updated!")
                 else:
                     st.error("Passwords do not match or fields are left blank.")
 
@@ -499,17 +471,11 @@ def admin_workspace():
         st.session_state['menu_index'] = menu_options.index(selected_top)
 
 # ==========================================
-# 6. MAIN ROUTING
+# 6. LOCAL RUN SIMULATOR (SILA KEKALKAN)
 # ==========================================
 def main():
-    inject_custom_css()
-    
     if 'logged_in' not in st.session_state:
         st.session_state['logged_in'] = False
-        
-    if 'menu_index' not in st.session_state:
-        st.session_state['menu_index'] = 0
-
     if not st.session_state['logged_in']:
         auth_page()
     else:
