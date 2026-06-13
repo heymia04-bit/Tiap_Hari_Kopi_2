@@ -12,8 +12,37 @@ from streamlit_option_menu import option_menu
 # ==========================================
 # 1. PAGE CONFIGURATION
 # ==========================================
-st.set_page_config(page_title="Tiap Hari Kopi System", layout="wide", page_icon="☕")
+# st.set_page_config(page_title="Tiap Hari Kopi System", layout="wide", page_icon="☕")
 
+def auth_page():
+    st.title("Log Masuk Pihak Pengurusan")
+    
+    # --- TAMPAL KOD FORM LOG IN ANDA DI SINI ---
+    # Contohnya yang ada st.text_input untuk username & password
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    
+    if st.button("Log In", key="login_btn"):
+        if username == "admin" and password == "kopi123": # Tukar ikut logik anda
+            st.session_state["logged_in"] = True
+            st.success("Berjaya!")
+            st.rerun()
+        else:
+            st.error("Kredential salah")
+
+
+# ====================================================================
+# LANGKAH 2: Bungkus bahagian DASHBOARD/GRAF anda ke dalam admin_workspace()
+# ====================================================================
+def admin_workspace():
+    st.title("Papan Pemuka Analitik (Admin)")
+    
+    # --- TAMPAL SEMUA KOD GRAF, MAP, & DATA API ANDA DI SINI ---
+    # Semua kod yang memaparkan data Google, Meta, dan graf-graf anda
+    # diletakkan di dalam blok fungsi ini (pastikan ada jarak/indentation ke dalam).
+    
+    st.write("Selamat datang ke ruangan dashboard.")
+    
 # ==========================================
 # 2. CUSTOM CSS & STYLING
 # ==========================================
