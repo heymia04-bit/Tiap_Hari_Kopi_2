@@ -812,6 +812,14 @@ elif selected_route == "FEEDBACK":
             padding: 16px;
             margin-bottom: 16px;
             font-family: Roboto, Arial, sans-serif;
+            transition: background-color 0.2s ease;
+        }
+        .google-review-card:hover {
+            background-color: #141d2a;
+        }
+        .gr-link-wrapper {
+            text-decoration: none;
+            display: block;
         }
         .gr-header {
             display: flex;
@@ -845,7 +853,6 @@ elif selected_route == "FEEDBACK":
         }
         .gr-more-btn {
             color: #9aa0a6;
-            cursor: pointer;
             font-size: 16px;
         }
         .gr-stars-row {
@@ -907,53 +914,63 @@ elif selected_route == "FEEDBACK":
     with col_left:
         st.markdown('<h3 style="color: white; margin-bottom: 20px;">What they say about us (Google Reviews)</h3>', unsafe_allow_html=True)
         
-        # Base64 Conversions for the primary review images
-        gr_b64_1 = get_b64_image("images/gr1.jpg")
-        gr_b64_2 = get_b64_image("images/gr2.jpg")
-        gr_b64_3 = get_b64_image("images/gr3.jpg")
-        gr_b64_4 = get_b64_image("images/gr4.jpg")
+        # Base64 Conversions for NurZetty Sofia review assets
+        zetty_avatar = get_b64_image("images/zettypic.png")
+        zetty_b64_1 = get_b64_image("images/zetty1.jpg")
+        zetty_b64_2 = get_b64_image("images/zetty2.jpg")
+        zetty_b64_3 = get_b64_image("images/zetty3.jpg")
+        zetty_b64_4 = get_b64_image("images/zetty4.jpg")
         
-        # Base64 placeholders for the newly added review images to prevent rendering crashes
-        thumb_a = get_b64_image("images/tiapharifront.jpg")
-        thumb_b = get_b64_image("images/tiapharibestdrinks.jpg")
-        thumb_c = get_b64_image("images/tiapharipasta.jpg")
+        # Base64 placeholders for Isabella Anne and generic review assets
+        isabella_avatar = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100"
+        ken_avatar = get_b64_image("images/kenpic.png")
+        khairul_avatar = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100"
+        
+        ken_thumb_1 = get_b64_image("images/ken1.jpg")
+        ken_thumb_2 = get_b64_image("images/ken2.jpg")
+        ken_thumb_3 = get_b64_image("images/ken3.jpg")
+
+        # Global Destination URL Link to Tiap Hari Kopi's Google Reviews
+        google_review_url = "https://www.google.com/search?sca_esv=53e31815f719979f&sxsrf=ANbL-n7zs_790y4jCVUkOo1b70jlyeE_nw:1781322130917&q=tiap+hari+kopi&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOZQOnwwztQwO3wTDCaDKWaqaSyvu4yV2m6x06uINzOpws4CyOToEV3OrYAkC5mcrndY21kiEjpNkzgiPnb1DqiBpkJtY&sa=X&ved=2ahUKEwju0d-GpoOVAxXtwjgGHUpbEVYQrrQLegQIIhAA&biw=1280&bih=585&dpr=1.5"
 
         # Open the scrolling viewport container wrapper
         st.markdown('<div class="reviews-scroll-container">', unsafe_allow_html=True)
         
         # --- REVIEW 1: NurZetty Sofia ---
         st.markdown(f"""
-        <div class="google-review-card">
-            <div class="gr-header">
-                <div class="gr-profile">
-                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar">
-                    <div class="gr-user-info">
-                        <span class="gr-name">NurZetty Sofia</span>
-                        <span class="gr-meta">6 ulasan • 6 foto</span>
+        <a href="{google_review_url}" target="_blank" class="gr-link-wrapper">
+            <div class="google-review-card">
+                <div class="gr-header">
+                    <div class="gr-profile">
+                        <img class="gr-avatar" src="{zetty_avatar}" alt="Avatar">
+                        <div class="gr-user-info">
+                            <span class="gr-name">NurZetty Sofia</span>
+                            <span class="gr-meta">6 ulasan • 6 foto</span>
+                        </div>
                     </div>
+                    <div class="gr-more-btn">⋮</div>
                 </div>
-                <div class="gr-more-btn">⋮</div>
+                <div class="gr-stars-row">
+                    <span class="gr-stars">★★★★★</span>
+                    <span class="gr-time">3 minggu yang lalu</span>
+                    <span class="gr-badge" style="background-color:#1a2636; color:#e8eaed; font-size:9px; padding:2px 5px; border-radius:3px;">BAHARU</span>
+                </div>
+                <div class="gr-text">
+                    Saya kenal TiapHari ni semenjak 2022. Speciality mmg Nisse Latte dan Kacang Phool. Walaupun KB ni byk kedai kopi, tp tak boleh lagi lawan Nisse latte TiapHari (ice/hot dua2 sedap) dan takde tempat lain nak cari kacang phool. Bukan tak ... <span style="color:#8ab4f8;">Lagi</span>
+                </div>
+                <div class="gr-images-grid">
+                    <img class="gr-img" src="{zetty_b64_1}">
+                    <img class="gr-img" src="{zetty_b64_2}">
+                    <img class="gr-img" src="{zetty_b64_3}">
+                    <img class="gr-img" src="{zetty_b64_4}">
+                </div>
+                <div class="gr-footer">
+                    <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
+                    <div style="display:flex; align-items:center; gap:4px;">🙏 <span>2</span></div>
+                    <div>🔗</div>
+                </div>
             </div>
-            <div class="gr-stars-row">
-                <span class="gr-stars">★★★★★</span>
-                <span class="gr-time">3 minggu yang lalu</span>
-                <span class="gr-badge" style="background-color:#1a2636; color:#e8eaed; font-size:9px; padding:2px 5px; border-radius:3px;">BAHARU</span>
-            </div>
-            <div class="gr-text">
-                Saya kenal TiapHari ni semenjak 2022. Speciality mmg Nisse Latte dan Kacang Phool. Walaupun KB ni byk kedai kopi, tp tak boleh lagi lawan Nisse latte TiapHari (ice/hot dua2 sedap) dan takde tempat lain nak cari kacang phool. Bukan tak ... <span style="color:#8ab4f8; cursor:pointer;">Lagi</span>
-            </div>
-            <div class="gr-images-grid">
-                <img class="gr-img" src="{gr_b64_1}">
-                <img class="gr-img" src="{gr_b64_2}">
-                <img class="gr-img" src="{gr_b64_3}">
-                <img class="gr-img" src="{gr_b64_4}">
-            </div>
-            <div class="gr-footer">
-                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
-                <div style="display:flex; align-items:center; gap:4px;">🙏 <span>2</span></div>
-                <div>🔗</div>
-            </div>
-        </div>
+        </a>
         """, unsafe_allow_html=True)
 
         # --- REVIEW 2: Farhana (Website Feedback) ---
@@ -968,101 +985,106 @@ elif selected_route == "FEEDBACK":
         """, unsafe_allow_html=True)
 
         # --- REVIEW 3: Isabella Anne ---
-        st.markdown("""
-        <div class="google-review-card">
-            <div class="gr-header">
-                <div class="gr-profile">
-                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="Avatar">
-                    <div class="gr-user-info">
-                        <span class="gr-name">Isabella Anne</span>
-                        <span class="gr-meta">Jurupandu Tempatan • 36 ulasan • 23 foto</span>
-                    </div>
-                </div>
-                <div class="gr-more-btn">⋮</div>
-            </div>
-            <div class="gr-stars-row">
-                <span class="gr-stars">★★★★★</span>
-                <span class="gr-time">4 bulan yang lalu</span>
-            </div>
-            <div class="gr-text">
-                Good food , just parking abit hard
-                <div style="background-color: #17202a; padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-size: 12px; color: #bdc1c6;">
-                    <b>Makanan:</b> 5/5  |  <b>Perkhidmatan:</b> 5/5  |  <b>Suasana:</b> 5/5
-                </div>
-                <span style="font-size:12px; color:#8ab4f8; cursor:pointer; margin-top:8px; display:inline-block;">Lihat terjemahan (Melayu)</span>
-            </div>
-            <div class="gr-footer">
-                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
-                <div>🔗</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # --- NEW REVIEW 4: Era Ab Rahim (Google Review matching image_124948.jpg layout) ---
         st.markdown(f"""
-        <div class="google-review-card">
-            <div class="gr-header">
-                <div class="gr-profile">
-                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" alt="Avatar">
-                    <div class="gr-user-info">
-                        <span class="gr-name">Era Ab Rahim</span>
-                        <span class="gr-meta">Jurupandu Tempatan • 794 ulasan • 4241 foto</span>
+        <a href="{google_review_url}" target="_blank" class="gr-link-wrapper">
+            <div class="google-review-card">
+                <div class="gr-header">
+                    <div class="gr-profile">
+                        <img class="gr-avatar" src="{isabella_avatar}" alt="Avatar">
+                        <div class="gr-user-info">
+                            <span class="gr-name">Isabella Anne</span>
+                            <span class="gr-meta">Jurupandu Tempatan • 36 ulasan • 23 foto</span>
+                        </div>
                     </div>
+                    <div class="gr-more-btn">⋮</div>
                 </div>
-                <div class="gr-more-btn">⋮</div>
+                <div class="gr-stars-row">
+                    <span class="gr-stars">★★★★★</span>
+                    <span class="gr-time">4 bulan yang lalu</span>
+                </div>
+                <div class="gr-text">
+                    Good food , just parking abit hard
+                    <div style="background-color: #17202a; padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-size: 12px; color: #bdc1c6;">
+                        <b>Makanan:</b> 5/5  |  <b>Perkhidmatan:</b> 5/5  |  <b>Suasana:</b> 5/5
+                    </div>
+                    <span style="font-size:12px; color:#8ab4f8; margin-top:8px; display:inline-block;">Lihat terjemahan (Melayu)</span>
+                </div>
+                <div class="gr-footer">
+                    <div style="display:flex; align-items:center; gap:4px;">❤️ <span>1</span></div>
+                    <div>🔗</div>
+                </div>
             </div>
-            <div class="gr-stars-row">
-                <span class="gr-stars">★★★★★</span>
-                <span class="gr-time">Diedit setahun yang lalu</span>
-            </div>
-            <div class="gr-text" style="color: #9aa0a6; font-size: 12.5px; margin-bottom: 6px;">
-                Makan di kedai | Lain-lain
-            </div>
-            <div class="gr-text">
-                My first visit here. Staff sgt baik, friendly and polite. Dorg kata bestseller kat sini Nisse Latte (gula melaka), but i chose Caramel Macchiato instead. & Pomegranate Soda for my friend there 🤭 Also served mini cheese tarts & pavlova. Kat ... <span style="color:#8ab4f8; cursor:pointer;">Lagi</span>
-                <br><span style="font-size:12px; color:#8ab4f8; cursor:pointer; margin-top:6px; display:inline-block;">Lihat terjemahan (Melayu)</span>
-            </div>
-            <div class="gr-images-grid">
-                <img class="gr-img" src="{thumb_a}">
-                <img class="gr-img" src="{thumb_b}">
-                <img class="gr-img" src="{thumb_c}">
-            </div>
-            <div class="gr-footer">
-                <div style="display:flex; align-items:center; gap:4px;">❤️</div>
-                <div style="display:flex; align-items:center; gap:4px;">🙏 <span>3</span></div>
-                <div>🔗</div>
-            </div>
-        </div>
+        </a>
         """, unsafe_allow_html=True)
 
-        # --- NEW REVIEW 5: Khairul Amrin (Google Review) ---
-        st.markdown("""
-        <div class="google-review-card">
-            <div class="gr-header">
-                <div class="gr-profile">
-                    <img class="gr-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" alt="Avatar">
-                    <div class="gr-user-info">
-                        <span class="gr-name">Khairul Amrin</span>
-                        <span class="gr-meta">12 ulasan</span>
+        # --- REVIEW 4: Koyoraka Ken (Google Review matching image_124948.jpg layout) ---
+        st.markdown(f"""
+        <a href="{google_review_url}" target="_blank" class="gr-link-wrapper">
+            <div class="google-review-card">
+                <div class="gr-header">
+                    <div class="gr-profile">
+                        <img class="gr-avatar" src="{ken_avatar}" alt="Avatar">
+                        <div class="gr-user-info">
+                            <span class="gr-name">Koyoraka Ken</span>
+                            <span class="gr-meta">Jurupandu Tempatan • 794 ulasan • 4241 foto</span>
+                        </div>
                     </div>
+                    <div class="gr-more-btn">⋮</div>
                 </div>
-                <div class="gr-more-btn">⋮</div>
+                <div class="gr-stars-row">
+                    <span class="gr-stars">★★★★☆</span>
+                    <span class="gr-time">Diedit setahun yang lalu</span>
+                </div>
+                <div class="gr-text" style="color: #9aa0a6; font-size: 12.5px; margin-bottom: 6px;">
+                    Makan di kedai | Lain-lain
+                </div>
+                <div class="gr-text">
+                    Kopi di sini sedap dan tidak terlalu mahal cuma kurang ekslusif daripada segi bekas yang digunakan untuk makan di situ. Sekiranya digunakan gelas kaca untuk makan dengan logo pasti lebih menarik&nbsp;dan kena dengan harga.......
+                </div>
+                <div class="gr-images-grid">
+                    <img class="gr-img" src="{ken_thumb_1}">
+                    <img class="gr-img" src="{ken_thumb_2}">
+                    <img class="gr-img" src="{ken_thumb_3}">
+                </div>
+                <div class="gr-footer">
+                    <div style="display:flex; align-items:center; gap:4px;">❤️</div>
+                    <div style="display:flex; align-items:center; gap:4px;">🙏 <span>3</span></div>
+                    <div>🔗</div>
+                </div>
             </div>
-            <div class="gr-stars-row">
-                <span class="gr-stars">★★★★★</span>
-                <span class="gr-time">2 bulan yang lalu</span>
-            </div>
-            <div class="gr-text">
-                Pasta dia portion padu & harga berbaloi sangat area Kubang Kerian ni. Nisse Latte icing tak manis potong kaki, just nice berkrim. Memang port lepak tetap lepas balik kerja.
-            </div>
-            <div class="gr-footer">
-                <div style="display:flex; align-items:center; gap:4px;">❤️ <span>2</span></div>
-                <div>🔗</div>
-            </div>
-        </div>
+        </a>
         """, unsafe_allow_html=True)
 
-        # --- NEW REVIEW 6: Sarah M. (Verified Website Feedback) ---
+        # --- REVIEW 5: Khairul Amrin (Google Review) ---
+        st.markdown(f"""
+        <a href="{google_review_url}" target="_blank" class="gr-link-wrapper">
+            <div class="google-review-card">
+                <div class="gr-header">
+                    <div class="gr-profile">
+                        <img class="gr-avatar" src="{khairul_avatar}" alt="Avatar">
+                        <div class="gr-user-info">
+                            <span class="gr-name">Khairul Amrin</span>
+                            <span class="gr-meta">12 ulasan</span>
+                        </div>
+                    </div>
+                    <div class="gr-more-btn">⋮</div>
+                </div>
+                <div class="gr-stars-row">
+                    <span class="gr-stars">★★★★★</span>
+                    <span class="gr-time">2 bulan yang lalu</span>
+                </div>
+                <div class="gr-text">
+                    Pasta dia portion padu & harga berbaloi sangat area Kubang Kerian ni. Nisse Latte icing tak manis potong kaki, just nice berkrim. Memang port lepak tetap lepas balik kerja.
+                </div>
+                <div class="gr-footer">
+                    <div style="display:flex; align-items:center; gap:4px;">❤️ <span>2</span></div>
+                    <div>🔗</div>
+                </div>
+            </div>
+        </a>
+        """, unsafe_allow_html=True)
+
+        # --- REVIEW 6: Sarah M. (Verified Website Feedback) ---
         st.markdown("""
         <div class="local-review-card" style="border-left-color: #00g5f6;">
             <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★★</div>
@@ -1073,7 +1095,7 @@ elif selected_route == "FEEDBACK":
         </div>
         """, unsafe_allow_html=True)
 
-        # --- NEW REVIEW 7: Bryan T. (Verified Website Feedback) ---
+        # --- REVIEW 7: Bryan T. (Verified Website Feedback) ---
         st.markdown("""
         <div class="local-review-card" style="border-left-color: #00g5f6;">
             <div style="display: flex; gap: 4px; margin-bottom: 4px; color: #fbbc05; font-size:13px;">★★★★☆</div>
