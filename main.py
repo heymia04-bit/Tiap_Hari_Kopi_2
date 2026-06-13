@@ -12,11 +12,6 @@ import re
 # --------------------------------------------------
 st.set_page_config(page_title="Tiap Hari Kopi", layout="wide")
 
-if 'logged_in' not in st.session_state:
-    st.session_state['logged_in'] = False
-if 'menu_index' not in st.session_state:
-    st.session_state['menu_index'] = 0
-
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght=300;400;600;700;800&display=swap');
@@ -767,18 +762,6 @@ elif selected_route == "RESERVATIONS":
         """, unsafe_allow_html=True)
         st.link_button("Find Us On GrabFood", "https://r.grab.com/g/6-20260612_211256_9ef30256bb924d40bac7573c90142773_MEXMPS-1-C3NTVKDZLZCHTJ")
 
-# ==================================================
-# BAHAGIAN INTEGRASI SISTEM BACKEND (ADMIN LOG IN)
-# ==================================================
-elif selected_route == "LOG IN":
-    import app as backend
-    
-    # Semak status: Jika belum log masuk, tunjuk form. Jika sudah, tunjuk dashboard.
-    if not st.session_state.get('logged_in', False):
-        backend.auth_page()
-    else:
-        backend.admin_workspace()
-        
 # --------------------------------------------------
     # FIXED GOOGLE MAP COMPONENT RIGHT HERE 
     # --------------------------------------------------
@@ -1892,4 +1875,3 @@ st.markdown("""
         Inspired by Nasken Website Template
     </div>
 """, unsafe_allow_html=True)
-
