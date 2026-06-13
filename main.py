@@ -789,130 +789,97 @@ elif selected_route == "RESERVATIONS":
     st.components.v1.html(map_iframe_html, height=500)
 
 elif selected_route == "FEEDBACK":
-    st.markdown("<h2 style='color: white; margin-bottom: 20px; text-align:center;'>Customer Feedback Hub</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color: white;'>💬 Customer Feedback Portal</h2>", unsafe_allow_html=True)
+    st.write("We would love to hear your thoughts about our coffee and service!")
     
-    # Global component styles matching real Google Review cards (image_124948.jpg & image_123e02.png)
-    st.markdown("""
-    <style>
-        .reviews-scroll-container {
-            max-height: 680px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-        .reviews-scroll-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        .reviews-scroll-container::-webkit-scrollbar-track {
-            background: #0b131f;
-            border-radius: 4px;
-        }
-        .reviews-scroll-container::-webkit-scrollbar-thumb {
-            background: #2a3b50;
-            border-radius: 4px;
-        }
-        .google-review-card {
-            background-color: #101721;
-            border: 1px solid #1c2838;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            font-family: Roboto, Arial, sans-serif;
-            transition: background-color 0.2s ease;
-        }
-        .google-review-card:hover {
-            background-color: #141d2a;
-        }
-        .gr-link-wrapper {
-            text-decoration: none;
-            display: block;
-        }
-        .gr-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-        .gr-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .gr-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .gr-user-info {
-            display: flex;
-            flex-direction: column;
-        }
-        .gr-name {
-            color: #ffffff;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        .gr-meta {
-            color: #9aa0a6;
-            font-size: 12px;
-        }
-        .gr-more-btn {
-            color: #9aa0a6;
-            font-size: 16px;
-        }
-        .gr-stars-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 13px;
-        }
-        .gr-stars {
-            color: #fbbc05;
-            letter-spacing: 1px;
-        }
-        .gr-time {
-            color: #9aa0a6;
-        }
-        .gr-text {
-            color: #e8eaed;
-            font-size: 13.5px;
-            line-height: 1.5;
-            margin-bottom: 12px;
-        }
-        /* Exact Google Review Image Grid Layout Formulation */
-        .gr-images-grid {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            overflow-x: auto;
-        }
-        .gr-img {
-            width: 105px;
-            height: 75px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #202b3c;
-        }
-        .gr-footer {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            color: #9aa0a6;
-            font-size: 13px;
-            margin-top: 8px;
-            border-top: 1px solid #1c2838;
-            padding-top: 10px;
-        }
-        .local-review-card {
-            background-color: #0b1119;
-            border-left: 4px solid #1877f2;
-            border-radius: 8px;
-            padding: 14px;
-            margin-bottom: 16px;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+    # 1. PECAHKAN KEPADA 2 KOLUM BERSEBELAHAN (Kiri dan Kanan)
+    col1, col2 = st.columns([1.2, 1])
+    
+    # KOLUM KIRI: Tempat customer isi form feedback
+    with col1:
+        st.markdown("<h4 style='color: white;'>Submit Your Feedback</h4>", unsafe_allow_html=True)
+        with st.form(key='feedback_form', clear_on_submit=True):
+            name = st.text_input("Name")
+            email = st.text_input("Email")
+            
+            customer_type = st.radio(
+                "Customer Type",
+                options=["First-time Customer", "Repeat Customer"],
+                horizontal=True
+            )
+            
+            rating = st.slider("Rating", 1, 5, 5)
+            comments = st.text_area("Your Feedback", height=120)
+            
+            submit_button = st.form_submit_button(label="Submit Feedback", use_container_width=True)
+            
+            if submit_button:
+                if name and comments:
+                    # Proses Analisis Sentiment secara automatik
+                    from textblob import TextBlob
+                    polarity = TextBlob(str(comments)).sentiment.polarity
+                    if polarity > 0.05: 
+                        sentiment = 'Positive'
+                    elif polarity < -0.05: 
+                        sentiment = 'Negative'
+                    else: 
+                        sentiment = 'Neutral'
+                    
+                    # Format Waktu Malaysia/Asia
+                    from datetime import datetime, timedelta
+                    my_time = datetime.utcnow() + timedelta(hours=8)
+                    date_str = my_time.strftime("%Y-%m-%d %H:%M:%S")
+                    
+                    import os
+                    db_file = 'reviews_database.csv'
+                    
+                    # Susun aturan data mengikut lajur yang betul (Review dahulu, baru Customer Type)
+                    new_row = pd.DataFrame({
+                        "Date": [date_str],
+                        "Platform": ["Web Portal"],
+                        "Review": [comments],
+                        "Customer Type": [customer_type],
+                        "Sentiment": [sentiment]
+                    })
+                    
+                    # Simpan secara selamat mengekalkan susunan nama lajur (pd.concat)
+                    if os.path.exists(db_file) and os.path.getsize(db_file) > 0:
+                        df_existing = pd.read_csv(db_file)
+                        df_combined = pd.concat([df_existing, new_row], ignore_index=True)
+                        df_combined.to_csv(db_file, index=False)
+                    else:
+                        new_row.to_csv(db_file, index=False)
+                    
+                    st.success(f"Thank you {name}! Your feedback has been recorded successfully.")
+                    import time
+                    time.sleep(1)
+                    st.rerun() # Refresh app auto untuk tunjuk data baru di kolum kanan
+                else:
+                    st.error("Please fill in your Name and Feedback comments.")
+
+    # KOLUM KANAN: Paparan rekod review sedia ada (Live View terus dari CSV)
+    with col2:
+        st.markdown("<h4 style='color: white;'>Recent Reviews</h4>", unsafe_allow_html=True)
+        import os
+        db_file = 'reviews_database.csv'
+        
+        if os.path.exists(db_file) and os.path.getsize(db_file) > 0:
+            df_reviews = pd.read_csv(db_file)
+            if not df_reviews.empty:
+                # Susun senarai lajur yang hendak dipaparkan di skrin customer
+                display_cols = ["Date", "Review", "Customer Type", "Sentiment"]
+                existing_cols = [col for col in display_cols if col in df_reviews.columns]
+                
+                # Sediakan jadual dengan data terbaru berada di kedudukan paling atas (.iloc[::-1])
+                st.dataframe(
+                    df_reviews[existing_cols].iloc[::-1].head(8), 
+                    use_container_width=True, 
+                    hide_index=True
+                )
+            else:
+                st.info("No customer reviews recorded yet.")
+        else:
+            st.info("No customer reviews recorded yet.")
 
     col_left, col_right = st.columns([1.1, 0.9], gap="large")
 
