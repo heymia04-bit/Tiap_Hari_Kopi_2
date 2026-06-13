@@ -12,7 +12,7 @@ from streamlit_option_menu import option_menu
 # ==========================================
 # 1. PAGE CONFIGURATION
 # ==========================================
-st.set_page_config(page_title="Tiap Hari Kopi System", layout="wide", page_icon="☕")
+# st.set_page_config(page_title="Tiap Hari Kopi System", layout="wide", page_icon="☕")
 
 # ==========================================
 # 2. CUSTOM CSS & STYLING
