@@ -657,7 +657,7 @@ if selected_route == "HOME":
         </div>
         """, unsafe_allow_html=True)
 
-    # ASYMMETRIC IMAGE GRID IN PROMOS SECTION
+    # ASYMMETRIC IMAGE GRID IN PROMOS SECTION (WITH REDIRECT HYPERLINKS ACTIVATED)
     grid_img_main = get_b64_image("images/promo1.jpg")
     grid_img_sub1 = get_b64_image("images/promo6.jpg")
     grid_img_sub2 = get_b64_image("images/promo3.jpg")
@@ -667,13 +667,31 @@ if selected_route == "HOME":
     st.markdown(f"""
     <div class="sb-grid-layout">
         <div class="sb-grid-left-featured">
-            <img src="{grid_img_main}" alt="Monthly Promotions">
+            <a href="https://wa.me/60134944337" target="_blank">
+                <img src="{grid_img_main}" alt="Monthly Promotions" style="cursor: pointer;">
+            </a>
         </div>
         <div class="sb-grid-right-stack">
-            <div class="sb-grid-item"><img src="{grid_img_sub1}"></div>
-            <div class="sb-grid-item"><img src="{grid_img_sub2}"></div>
-            <div class="sb-grid-item"><img src="{grid_img_sub3}"></div>
-            <div class="sb-grid-item"><img src="{grid_img_sub4}"></div>
+            <div class="sb-grid-item">
+                <a href="https://www.instagram.com/TiapHariKopi" target="_blank">
+                    <img src="{grid_img_sub1}" style="cursor: pointer;">
+                </a>
+            </div>
+            <div class="sb-grid-item">
+                <a href="https://r.grab.com/g/6-20260612_211256_9ef30256bb924d40bac7573c90142773_MEXMPS-1-C3NTVKDZLZCHTJ" target="_blank">
+                    <img src="{grid_img_sub2}" style="cursor: pointer;">
+                </a>
+            </div>
+            <div class="sb-grid-item">
+                <a href="?page=MENU" target="_self">
+                    <img src="{grid_img_sub3}" style="cursor: pointer;">
+                </a>
+            </div>
+            <div class="sb-grid-item">
+                <a href="?page=MENU" target="_self">
+                    <img src="{grid_img_sub4}" style="cursor: pointer;">
+                </a>
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
