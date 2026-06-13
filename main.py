@@ -1814,48 +1814,32 @@ elif selected_route == "ABOUT US":
     """, unsafe_allow_html=True)
 
 elif selected_route == "LOG IN":
-
     import app as backend
     import importlib
     importlib.reload(backend)
     
-    # Suntik reka bentuk visual tersuai milik app.py
-    backend.inject_custom_css()
+    # 1. Cipta Header Utama Portal
+    st.markdown("<h2 style='color: white; text-align: center;'>🔒 Internal Portal & Analytics</h2>", unsafe_allow_html=True)
+    st.write("---")
     
-    # Semakan status: Jika belum login paparkan borang, jika sudah paparkan workspace dashboard
+    # 2. Semakan Status Login: Jika BELUM Login, paparkan sub-menu Login Portal
     if not st.session_state.get('logged_in', False):
+        st.markdown("<h3 style='color: #00bbff;'>🔑 Staff Login Portal</h3>", unsafe_allow_html=True)
+        # Memanggil borang login daripada app.py
         backend.auth_page()
+        
+    # 3. Jika SUDAH Berjaya Login, paparkan sub-menu Dashboard Analytics
     else:
+        st.markdown("<h3 style='color: #00ff88;'>📊 Business Analytics Dashboard</h3>", unsafe_allow_html=True)
+        
+        # Butang Log Out disediakan di atas dashboard untuk kemudahan staff
+        if st.button("🚪 Log Out dari Portal"):
+            st.session_state['logged_in'] = False
+            st.rerun()
+            
+        # Memanggil paparan dashboard utama daripada app.py
         backend.admin_workspace()
         
-    st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center;'>🔒 Internal Portal & Analytics</h2>", unsafe_allow_html=True)
-    
-    tab_metrics, tab_login = st.tabs(["📊 Business Analytics Dashboard", "🔑 Staff Login Portal"])
-    
-    with tab_metrics:
-        d_col1, d_col2 = st.columns([1, 1.2], gap="large")
-        with d_col1:
-            st.metric("Total Shared Reviews", f"{st.session_state.total_reviews:,}")
-            total_counted = sum(st.session_state.customer_metrics.values())
-            repeat_pct = (st.session_state.customer_metrics["Repeat Customer"] / total_counted) * 100
-            st.metric("Returning Visitors Rate", f"{repeat_pct:.1f}%")
-            st.metric("Average Rating", "4.9 / 5.0")
-            
-        with d_col2:
-            chart_df = pd.DataFrame({
-                "Customer Type": list(st.session_state.customer_metrics.keys()),
-                "Count": list(st.session_state.customer_metrics.values())
-            })
-            fig = px.pie(chart_df, values="Count", names="Customer Type", title="Customer Demographics Breakdown", color_discrete_sequence=["#004481", "#ffffff"])
-            fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font_color='#ffffff', height=280, margin=dict(t=50, b=0, l=0, r=0))
-            st.plotly_chart(fig, use_container_width=True)
-            
-    with tab_login:
-        st.warning("Secure Portal Access - Cloud verification active.")
-        st.text_input("Staff Email ID", placeholder="barista@tiapharikopi.com")
-        st.text_input("Access Password", type="password", placeholder="••••••••")
-        st.button("Authenticate & Log In")
-
 # 3. INTERACTIVE NATIVE HTML/CSS FLOATING "GO TO TOP" BUTTON (ACCESSIBLE EVERYWHERE)
 st.markdown("""
 <div class="scroll-wrapper-global">
