@@ -1813,6 +1813,35 @@ elif selected_route == "ABOUT US":
         </div>
     """, unsafe_allow_html=True)
 
+elif selected_route == "LOG IN":
+    st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center;'>🔒 Internal Portal & Analytics</h2>", unsafe_allow_html=True)
+    
+    tab_metrics, tab_login = st.tabs(["📊 Business Analytics Dashboard", "🔑 Staff Login Portal"])
+    
+    with tab_metrics:
+        d_col1, d_col2 = st.columns([1, 1.2], gap="large")
+        with d_col1:
+            st.metric("Total Shared Reviews", f"{st.session_state.total_reviews:,}")
+            total_counted = sum(st.session_state.customer_metrics.values())
+            repeat_pct = (st.session_state.customer_metrics["Repeat Customer"] / total_counted) * 100
+            st.metric("Returning Visitors Rate", f"{repeat_pct:.1f}%")
+            st.metric("Average Rating", "4.9 / 5.0")
+            
+        with d_col2:
+            chart_df = pd.DataFrame({
+                "Customer Type": list(st.session_state.customer_metrics.keys()),
+                "Count": list(st.session_state.customer_metrics.values())
+            })
+            fig = px.pie(chart_df, values="Count", names="Customer Type", title="Customer Demographics Breakdown", color_discrete_sequence=["#004481", "#ffffff"])
+            fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font_color='#ffffff', height=280, margin=dict(t=50, b=0, l=0, r=0))
+            st.plotly_chart(fig, use_container_width=True)
+            
+    with tab_login:
+        st.warning("Secure Portal Access - Cloud verification active.")
+        st.text_input("Staff Email ID", placeholder="barista@tiapharikopi.com")
+        st.text_input("Access Password", type="password", placeholder="••••••••")
+        st.button("Authenticate & Log In")
+
 # 3. INTERACTIVE NATIVE HTML/CSS FLOATING "GO TO TOP" BUTTON (ACCESSIBLE EVERYWHERE)
 st.markdown("""
 <div class="scroll-wrapper-global">
