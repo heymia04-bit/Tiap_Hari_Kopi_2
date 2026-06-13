@@ -12,6 +12,11 @@ import re
 # --------------------------------------------------
 st.set_page_config(page_title="Tiap Hari Kopi", layout="wide")
 
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+if 'menu_index' not in st.session_state:
+    st.session_state['menu_index'] = 0
+
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght=300;400;600;700;800&display=swap');
@@ -1809,33 +1814,16 @@ elif selected_route == "ABOUT US":
     """, unsafe_allow_html=True)
 
 elif selected_route == "LOG IN":
-    st.markdown("<h2 style='color:#ffffff; font-weight:800; text-align:center;'>🔒 Internal Portal & Analytics</h2>", unsafe_allow_html=True)
+    import app as backend  # Mengimport fail app.py anda sebagai backend
     
-    tab_metrics, tab_login = st.tabs(["📊 Business Analytics Dashboard", "🔑 Staff Login Portal"])
+    # Memandangkan app.py memerlukan CSS khasnya, kita inject CSS tersebut di sini
+    backend.inject_custom_css()
     
-    with tab_metrics:
-        d_col1, d_col2 = st.columns([1, 1.2], gap="large")
-        with d_col1:
-            st.metric("Total Shared Reviews", f"{st.session_state.total_reviews:,}")
-            total_counted = sum(st.session_state.customer_metrics.values())
-            repeat_pct = (st.session_state.customer_metrics["Repeat Customer"] / total_counted) * 100
-            st.metric("Returning Visitors Rate", f"{repeat_pct:.1f}%")
-            st.metric("Average Rating", "4.9 / 5.0")
-            
-        with d_col2:
-            chart_df = pd.DataFrame({
-                "Customer Type": list(st.session_state.customer_metrics.keys()),
-                "Count": list(st.session_state.customer_metrics.values())
-            })
-            fig = px.pie(chart_df, values="Count", names="Customer Type", title="Customer Demographics Breakdown", color_discrete_sequence=["#004481", "#ffffff"])
-            fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font_color='#ffffff', height=280, margin=dict(t=50, b=0, l=0, r=0))
-            st.plotly_chart(fig, use_container_width=True)
-            
-    with tab_login:
-        st.warning("Secure Portal Access - Cloud verification active.")
-        st.text_input("Staff Email ID", placeholder="barista@tiapharikopi.com")
-        st.text_input("Access Password", type="password", placeholder="••••••••")
-        st.button("Authenticate & Log In")
+    # Logik Semakan Status Log Masuk
+    if not st.session_state['logged_in']:
+        backend.auth_page()  # Panggil fungsi login page dari app.py
+    else:
+        backend.admin_workspace()  # Panggil fungsi dashboard dari app.py
 
 # 3. INTERACTIVE NATIVE HTML/CSS FLOATING "GO TO TOP" BUTTON (ACCESSIBLE EVERYWHERE)
 st.markdown("""
