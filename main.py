@@ -1084,25 +1084,25 @@ elif selected_route == "FEEDBACK":
     st.markdown("<h2 style='color: white;'>💬 Share Your Feedback</h2>", unsafe_allow_html=True)
     st.write("We would love to hear your thoughts about our coffee and service!")
     
-    #with st.form(key='feedback_form', clear_on_submit=True):
-        #name = st.text_input("Name")
-        #email = st.text_input("Email")
+    with st.form(key='feedback_form', clear_on_submit=True):
+        name = st.text_input("Name")
+        email = st.text_input("Email")
         
-        #Penambahan Input Radio bagi Jenis Pelanggan
-        #customer_type = st.radio(
-            #"Customer Type",
-            #options=["First-time Customer", "Repeat Customer"],
-            #horizontal=True
+        Penambahan Input Radio bagi Jenis Pelanggan
+        customer_type = st.radio(
+            "Customer Type",
+            options=["First-time Customer", "Repeat Customer"],
+            horizontal=True
         )
         
-        #rating = st.slider("Rating", 1, 5, 5)
-        #comments = st.text_area("Your Feedback")
+        rating = st.slider("Rating", 1, 5, 5)
+        comments = st.text_area("Your Feedback")
         
-        #submit_button = st.form_submit_button(label="Submit Feedback")
+        submit_button = st.form_submit_button(label="Submit Feedback")
         
         if submit_button:
             if name and comments:
-                # Proses Analisis Sentiment (Positive/Negative/Neutral)
+                Proses Analisis Sentiment (Positive/Negative/Neutral)
                 from textblob import TextBlob
                 polarity = TextBlob(str(comments)).sentiment.polarity
                 if polarity > 0.05: 
