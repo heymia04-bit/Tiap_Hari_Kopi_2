@@ -1842,9 +1842,9 @@ elif selected_route == "LOG IN":
         st.markdown("<h3 style='color: #00ff88;'>📊 Business Analytics Dashboard</h3>", unsafe_allow_html=True)
         
         # Butang Log Out disediakan di atas dashboard untuk kemudahan staff
-        if st.button("🚪 Log Out dari Portal"):
-            st.session_state['logged_in'] = False
-            st.rerun()
+        # if st.button("🚪 Log Out dari Portal"):
+        #    st.session_state['logged_in'] = False
+        #    st.rerun()
             
         # Memanggil paparan dashboard utama daripada app.py
         backend.admin_workspace()
