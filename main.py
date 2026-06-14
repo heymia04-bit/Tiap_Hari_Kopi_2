@@ -1102,7 +1102,7 @@ elif selected_route == "FEEDBACK":
         
         if submit_button:
             if name and comments:
-                Proses Analisis Sentiment (Positive/Negative/Neutral)
+                #Proses Analisis Sentiment (Positive/Negative/Neutral)
                 from textblob import TextBlob
                 polarity = TextBlob(str(comments)).sentiment.polarity
                 if polarity > 0.05: 
