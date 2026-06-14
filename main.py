@@ -1088,7 +1088,7 @@ elif selected_route == "FEEDBACK":
         name = st.text_input("Name")
         email = st.text_input("Email")
         
-        Penambahan Input Radio bagi Jenis Pelanggan
+        #Penambahan Input Radio bagi Jenis Pelanggan
         customer_type = st.radio(
             "Customer Type",
             options=["First-time Customer", "Repeat Customer"],
