@@ -1084,9 +1084,9 @@ elif selected_route == "FEEDBACK":
     st.markdown("<h2 style='color: white;'>💬 Share Your Feedback</h2>", unsafe_allow_html=True)
     st.write("We would love to hear your thoughts about our coffee and service!")
     
-    with st.form(key='feedback_form', clear_on_submit=True):
-        name = st.text_input("Name")
-        email = st.text_input("Email")
+    #with st.form(key='feedback_form', clear_on_submit=True):
+        #name = st.text_input("Name")
+        #email = st.text_input("Email")
         
         # Penambahan Input Radio bagi Jenis Pelanggan
         customer_type = st.radio(
